@@ -15,8 +15,6 @@ Try to run pipenv first. If it doesn't work, you can try the solutions below.
 
 https://wiki.python.org/moin/WindowsCompilers
 
-https://visualstudio.microsoft.com/downloads/
-
 Developer tools:
 ![mscv download](./docs/visual%20studio%20developer%20tools%20turkish.png)
 Windows sdk:
