@@ -12,6 +12,7 @@ had issues setting it up. I also had to install two dependencies from visual stu
 Try to run pipenv first. If it doesn't work, you can try the solutions below.
 
 https://wiki.python.org/moin/WindowsCompilers
+
 https://visualstudio.microsoft.com/downloads/
 
 Developer tools:
