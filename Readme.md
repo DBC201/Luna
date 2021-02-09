@@ -5,7 +5,7 @@ https://github.com/sammchardy/python-binance
 
 In case of time sync error, sync your os time with internet time.
 
-![windows time sync](./docs/latest%20windows%2010%20sdk.png)
+![windows time sync](./docs/sync%20internet%20time.png)
 
 The file for Twisted library is also included in this repo because I have
 had issues setting it up. I also had to install two dependencies from visual studio.
