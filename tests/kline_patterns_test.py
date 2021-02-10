@@ -9,8 +9,6 @@ load_dotenv(dotenv_path="../.env.local")
 client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 symbols = {
-    "BTCUSDT": [],
-    "DOGEUSDT": [],
     "COSUSDT": []
 }
 
@@ -19,10 +17,12 @@ sock_manager = BinanceSocketManager(client)
 
 def callback(data):  # function call for each socket data
     symbol = data['s']
+    klines = symbols[symbol][1]
+    print(symbol, pattern_matches([*klines[:-1], kline_helpers.convert_socket_kline(data['k'])]))
     if data['k']['x']:
-        symbols[symbol][1].pop(0)
+        klines.pop(0)
         symbols[symbol][1].append(kline_helpers.convert_socket_kline(data['k']))
-        klines = symbols[symbol][1]
+        print("kline timeframe finished")
         print(symbol, pattern_matches(klines))
 
 
