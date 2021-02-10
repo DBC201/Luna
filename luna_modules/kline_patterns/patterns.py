@@ -61,3 +61,4 @@ def pattern_matches(klines):
         matches.append("evening star")
     if is_morning_star(klines):
         matches.append("morning star")
+    return matches
