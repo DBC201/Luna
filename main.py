@@ -19,5 +19,5 @@ sock_manager = BinanceSocketManager(client)
 for symbol in symbols:
     curr_key = sock_manager.start_kline_socket(symbol, callback, interval=client.KLINE_INTERVAL_15MINUTE)
     kline_history = client.get_historical_klines(symbol, client.KLINE_INTERVAL_15MINUTE, "1 hour ago")
-    symbols[symbol] = [curr_key, kline_history]
+    symbols[symbol] = [curr_key, [list(map(float, x)) for x in kline_history]]
 sock_manager.start() # initate connection
