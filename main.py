@@ -13,6 +13,8 @@ def callback(data): # function call for each socket data
 
 exchange_info = client.get_exchange_info()
 symbols = {s["symbol"]: [] for s in exchange_info["symbols"]} # symbol: [identifier, kline_history]
+if len(symbols) > 1024:
+    raise RuntimeError("More symbols than the allowed maximum")
 sock_manager = BinanceSocketManager(client)
 for symbol in symbols:
     curr_key = sock_manager.start_kline_socket(symbol, callback, interval=client.KLINE_INTERVAL_15MINUTE)

@@ -1,0 +1,48 @@
+https://python-binance.readthedocs.io/en/latest/binance.html#binance.client.Client.get_klines
+
+Example kline:
+[
+    [
+        1499040000000,      # Open time
+        "0.01634790",       # Open
+        "0.80000000",       # High
+        "0.01575800",       # Low
+        "0.01577100",       # Close
+        "148976.11427815",  # Volume
+        1499644799999,      # Close time
+        "2434.19055334",    # Quote asset volume
+        308,                # Number of trades
+        "1756.87402397",    # Taker buy base asset volume
+        "28.46694368",      # Taker buy quote asset volume
+        "17928899.62484339" # Can be ignored
+    ]
+]
+
+
+https://python-binance.readthedocs.io/en/latest/binance.html#binance.websockets.BinanceSocketManager.start_kline_socket
+
+Example socket kline:
+{
+    "e": "kline",                                   # event type
+    "E": 1499404907056,                             # event time
+    "s": "ETHBTC",                                  # symbol
+    "k": {
+        "t": 1499404860000,                 # start time of this bar
+        "T": 1499404919999,                 # end time of this bar
+        "s": "ETHBTC",                              # symbol
+        "i": "1m",                                  # interval
+        "f": 77462,                                 # first trade id
+        "L": 77465,                                 # last trade id
+        "o": "0.10278577",                  # open
+        "c": "0.10278645",                  # close
+        "h": "0.10278712",                  # high
+        "l": "0.10278518",                  # low
+        "v": "17.47929838",                 # volume
+        "n": 4,                                             # number of trades
+        "x": false,                                 # whether this bar is final
+        "q": "1.79662878",                  # quote volume
+        "V": "2.34879839",                  # volume of active buy
+        "Q": "0.24142166",                  # quote volume of active buy
+        "B": "13279784.01349473"    # can be ignored
+        }
+}
