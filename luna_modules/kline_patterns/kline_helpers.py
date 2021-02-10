@@ -1,17 +1,18 @@
 def convert_socket_kline(socket_kline):  # sock['k'] as input
     converted = []
-    converted.append(socket_kline['t'])
-    converted.append(socket_kline['o'])
-    converted.append(socket_kline['h'])
-    converted.append(socket_kline['l'])
-    converted.append(socket_kline['c'])
-    converted.append(socket_kline['v'])
-    converted.append(socket_kline['T'])
-    converted.append(socket_kline['q'])
-    converted.append(socket_kline['n'])
-    converted.append(socket_kline['V'])
-    converted.append(socket_kline['Q'])
-    converted.append(socket_kline['B'])
+    converted.append(float(socket_kline['t']))
+    converted.append(float(socket_kline['o']))
+    converted.append(float(socket_kline['h']))
+    converted.append(float(socket_kline['l']))
+    converted.append(float(socket_kline['c']))
+    converted.append(float(socket_kline['v']))
+    converted.append(float(socket_kline['T']))
+    converted.append(float(socket_kline['q']))
+    converted.append(float(socket_kline['n']))
+    converted.append(float(socket_kline['V']))
+    converted.append(float(socket_kline['Q']))
+    converted.append(float(socket_kline['B']))
+    return converted
 
 
 def kline_head_length(kline):
@@ -32,3 +33,7 @@ def kline_head_top(kline):
 
 def kline_midpoint(kline):
     return kline[3] + total_kline_length(kline)/2  # low + total_length
+
+
+def is_red(kline):
+    return kline[1] > kline[4]  # open < close
