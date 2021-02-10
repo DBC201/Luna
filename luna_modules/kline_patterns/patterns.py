@@ -38,13 +38,15 @@ def is_evening_star(klines):
 def is_bullish_engulf(klines):
     prev_length = kline_helpers.kline_head_length(klines[-2])
     final_length = kline_helpers.kline_head_length(klines[-1])
-    return kline_helpers.is_red(klines[-2]) and prev_length < final_length
+    final_green = not kline_helpers.is_red(klines[-1])
+    return final_green and prev_length < final_length
 
 
 def is_bearish_engulf(klines):
     prev_length = kline_helpers.kline_head_length(klines[-2])
     final_length = kline_helpers.kline_head_length(klines[-1])
-    return (not kline_helpers.is_red(klines[-2])) and prev_length < final_length
+    final_red = kline_helpers.is_red(klines[-1])
+    return final_red and prev_length < final_length
 
 
 def pattern_matches(klines):
