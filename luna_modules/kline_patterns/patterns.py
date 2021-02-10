@@ -8,9 +8,9 @@ def is_hammer(klines):
 
 
 def is_hanging_man(klines):
-    head_top = kline_helpers.kline_head_top(klines[-1])
+    head_bottom = kline_helpers.kline_head_bottom(klines[-1])
     midpoint = kline_helpers.kline_midpoint(klines[-1])
-    return (not kline_helpers.is_red(klines[-1])) and head_top < midpoint
+    return (not kline_helpers.is_red(klines[-2])) and head_bottom > midpoint
 
 
 def is_morning_star(klines):

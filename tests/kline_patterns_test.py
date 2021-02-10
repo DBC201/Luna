@@ -10,7 +10,8 @@ client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 symbols = {
     "BTCUSDT": [],
-    "DOGEUSDT": []
+    "DOGEUSDT": [],
+    "COSUSDT": []
 }
 
 sock_manager = BinanceSocketManager(client)
