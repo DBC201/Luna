@@ -31,4 +31,4 @@ def kline_head_top(kline):
 
 
 def kline_midpoint(kline):
-    return total_kline_length(kline)/2
+    return kline[3] + total_kline_length(kline)/2  # low + total_length
