@@ -29,7 +29,7 @@ count = 1
 for symbol in symbols:
     print(f"Loading symbol {symbol}, {round((count / len(symbols) * 100), 2)}% done")
     curr_key = sock_manager.start_kline_socket(symbol, callback, interval=client.KLINE_INTERVAL_15MINUTE)
-    kline_history = client.get_historical_klines(symbol, client.KLINE_INTERVAL_15MINUTE, "45 minutes ago UTC")
+    kline_history = client.get_historical_klines(symbol, client.KLINE_INTERVAL_15MINUTE, "60 minutes ago UTC", "15 minutes ago UTC")
     symbols[symbol] = [curr_key, [list(map(float, x)) for x in kline_history]]
     print(symbol, pattern_matches(symbols[symbol][1]))
     count += 1
