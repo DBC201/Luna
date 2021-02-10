@@ -18,10 +18,11 @@ sock_manager = BinanceSocketManager(client)
 def callback(data):  # function call for each socket data
     symbol = data['s']
     klines = symbols[symbol][1]
-    print(symbol, pattern_matches([*klines[:-1], kline_helpers.convert_socket_kline(data['k'])]))
+    last_kline = kline_helpers.convert_socket_kline(data['k'])
+    print(symbol, pattern_matches([*klines[:-1], last_kline]))
     if data['k']['x']:
         klines.pop(0)
-        symbols[symbol][1].append(kline_helpers.convert_socket_kline(data['k']))
+        klines.append(last_kline)
         print("kline timeframe finished")
         print(symbol, pattern_matches(klines))
 
