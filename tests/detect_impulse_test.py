@@ -22,9 +22,9 @@ def callback(data):  # function call for each socket data
     last_kline = kline_helpers.convert_socket_kline(data['k'])
     print(symbol, pattern_matches([*klines, last_kline]))
     if data['k']['x']:
-        klines.pop(0)
         klines.append(last_kline)
         print("kline timeframe finished. Impulse:", is_impulse_wave(klines))
+        klines.pop(0)
 
 
 count = 1
