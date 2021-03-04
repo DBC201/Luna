@@ -23,6 +23,7 @@ def callback(data):  # function call for each socket data
     print(symbol, pattern_matches([*klines, last_kline]))
     if data['k']['x']:
         klines.append(last_kline)
+        print(len(klines))
         print("kline timeframe finished. Impulse:", is_impulse_wave(klines))
         klines.pop(0)
 
@@ -31,7 +32,7 @@ count = 1
 for symbol in symbols:
     print(f"Loading symbol {symbol}, {round((count / len(symbols) * 100), 2)}% done")
     curr_key = sock_manager.start_kline_socket(symbol, callback, interval=client.KLINE_INTERVAL_1MINUTE)
-    kline_history = client.get_historical_klines(symbol, client.KLINE_INTERVAL_1MINUTE, "2 MINUTES AGO UTC")
+    kline_history = client.get_historical_klines(symbol, client.KLINE_INTERVAL_1MINUTE, "3 MINUTES AGO UTC")
     symbols[symbol] = [curr_key, [list(map(float, x)) for x in kline_history]]
     count += 1
 sock_manager.start()  # initate connection
