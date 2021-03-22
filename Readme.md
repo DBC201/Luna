@@ -4,6 +4,7 @@
 
 #### https://github.com/sammchardy/python-binance
 
+Run 'pipenv install' in root folder.
 
 In case of time sync error, sync your os time with internet time.
 

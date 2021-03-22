@@ -1,6 +1,7 @@
 import requests
 import os
 import time
+import send_mail
 
 
 def get_last_listing():
@@ -53,7 +54,8 @@ if last_listing == "":
 while True:
     current_listing = get_last_listing()
     if current_listing != last_listing:
-        print(current_listing)
-        # Inform users here
+        message = "Subject: " + current_listing
+        send_mail.send("turkmenatilla522@gmail.com", message)
+        send_mail.send("denizbcakiroglu@gmail.com", message)
         write_to_file(my_file, current_listing)
     time.sleep(60)
