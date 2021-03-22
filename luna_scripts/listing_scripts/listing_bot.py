@@ -60,7 +60,7 @@ def trade_callback(data):
             elif DOUBLE_OUT and TRIPLE_OUT and current_price <= MAX_PRICE * 0.95: # i don't like this multiplication here slows down?
                 client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
                 sys.exit()
-            elif time.time() - START_TIME >= 1:
+            elif time.time() - START_TIME >= 58:
                 client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
                 sys.exit()
     else:
