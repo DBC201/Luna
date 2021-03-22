@@ -1,7 +1,7 @@
 import requests
 import os
 import time
-import send_mail
+from scripts.listing_scripts import send_mail
 
 
 def get_last_listing():
@@ -41,21 +41,22 @@ def write_to_file(file_name, content):
     f.close()
 
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-f = open(my_file, "r")
-last_listing = f.read()
-f.close()
+if __name__ == '__main__':
+    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
+    f = open(my_file, "r")
+    last_listing = f.read()
+    f.close()
 
-if last_listing == "":
-    last_listing = get_last_listing()
-    write_to_file(my_file, last_listing)
+    if last_listing == "":
+        last_listing = get_last_listing()
+        write_to_file(my_file, last_listing)
 
-while True:
-    current_listing = get_last_listing()
-    if current_listing != last_listing:
-        message = "Subject: " + current_listing
-        send_mail.send("turkmenatilla522@gmail.com", message)
-        send_mail.send("denizbcakiroglu@gmail.com", message)
-        write_to_file(my_file, current_listing)
-    time.sleep(60)
+    while True:
+        current_listing = get_last_listing()
+        if current_listing != last_listing:
+            message = "Subject: " + current_listing
+            send_mail.send("turkmenatilla522@gmail.com", message)
+            send_mail.send("denizbcakiroglu@gmail.com", message)
+            write_to_file(my_file, current_listing)
+        time.sleep(60)
