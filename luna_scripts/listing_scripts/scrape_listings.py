@@ -1,7 +1,7 @@
 import requests
 import os
 import time
-from scripts.listing_scripts import send_mail
+from luna_scripts.listing_scripts import send_mail
 
 
 def get_last_listing():
