@@ -1,4 +1,4 @@
 .env.local
 .idea
 __pycache__/
-#luna_scripts/listing_scripts/last-new-listing.txt
+luna_scripts/listing_scripts/last-new-listing.txt
