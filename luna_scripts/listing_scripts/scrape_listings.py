@@ -41,6 +41,11 @@ def write_to_file(file_name, content):
     f.close()
 
 
+def read_last_listing(file_name):
+    with open(file_name, 'r') as file:
+        return file.read()
+
+
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
@@ -48,14 +53,11 @@ if __name__ == '__main__':
     last_listing = f.read()
     f.close()
 
-    if last_listing == "":
-        last_listing = get_last_listing()
-        write_to_file(my_file, last_listing)
-
     while True:
         current_listing = get_last_listing()
-        if current_listing != last_listing:
-            message = "Subject: " + current_listing
+        if current_listing != read_last_listing(my_file):
+            message = "Subject: " + current_listing + '\n'
+            message += "\nhttps://www.binance.com/en/support/announcement/c-48"
             send_mail.send("turkmenatilla522@gmail.com", message)
             send_mail.send("denizbcakiroglu@gmail.com", message)
             write_to_file(my_file, current_listing)
