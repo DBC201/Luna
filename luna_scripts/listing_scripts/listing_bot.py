@@ -45,6 +45,7 @@ def trade_callback(data):
             BOTTOM_VAL = IN_PRICE * 0.95
             BALANCE = client.get_asset_balance(asset=BUY_TYPE)["free"]
             IN = True
+            START_TIME = time.time()
         else:
             if current_price <= BOTTOM_VAL:
                 client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
@@ -78,5 +79,5 @@ DOUBLE_VAL = 0
 TRIPLE_VAL = 0
 BOTTOM_VAL = sys.maxsize
 BALANCE = 0
-START_TIME = time.time()
+START_TIME = 0
 sock_manager.run()
