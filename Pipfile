@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+# comment setuptools and twisted for unix
 setuptools = "*"
 twisted = {path = "./Twisted-20.3.0-cp39-cp39-win_amd64.whl"}
 python-binance = "*"
