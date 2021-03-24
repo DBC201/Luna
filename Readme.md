@@ -10,7 +10,7 @@ to make it modular as much as we could and luna_modules can be used anywhere wit
 ## For Windows
 - Run 'pipenv install' in root folder. This should install the required dependencies.
 - In case of time sync error, sync your os time with internet time.
-    - ![windows time sync](./docs/pictures/sync%20internet%20time.png)
+    ![windows time sync](./docs/pictures/sync%20internet%20time.png)
 - The file for Twisted library is also included in this repo because I have
   had issues setting it up. I also had to install two dependencies from visual studio.
   Try to run pipenv first. If it doesn't work, you can try the solutions below.
