@@ -49,9 +49,7 @@ def read_last_listing(file_name):
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-    f = open(my_file, "r")
-    last_listing = f.read()
-    f.close()
+    write_to_file(my_file, '')
 
     while True:
         current_listing = get_last_listing()
