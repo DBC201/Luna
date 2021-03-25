@@ -50,13 +50,15 @@ if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
     write_to_file(my_file, get_last_listing())
+    with open("./mailing_list.txt", 'r') as file:
+        emails = [email.strip() for email in file.readlines()]
 
     while True:
         current_listing = get_last_listing()
         if current_listing != read_last_listing(my_file):
             message = "Subject: " + current_listing + '\n'
             message += "\nhttps://www.binance.com/en/support/announcement/c-48"
-            send_mail.send("turkmenatilla522@gmail.com", message)
-            send_mail.send("denizbcakiroglu@gmail.com", message)
+            for email in emails:
+                send_mail.send(email, message)
             write_to_file(my_file, current_listing)
         time.sleep(60)
