@@ -17,8 +17,8 @@ def return_parser():
 
 
 args = return_parser().parse_args(sys.argv[1:])
-BUY_TYPE = args.buy_type
-SELL_TYPE = args.sell_type
+BUY_TYPE = args.buy_type.upper()
+SELL_TYPE = args.sell_type.upper()
 SPENDING_AMOUNT = args.spending_amount
 env_path = args.env_path
 SYMBOL = BUY_TYPE + SELL_TYPE
