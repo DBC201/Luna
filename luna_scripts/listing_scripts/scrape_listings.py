@@ -2,6 +2,8 @@ import requests
 import os
 import time
 import send_mail
+import re
+import json
 
 
 def get_last_listing():
@@ -46,15 +48,24 @@ def read_last_listing(file_name):
         return file.read()
 
 
+def scrape_titles():
+    decoded_page = requests.get('https://www.binance.com/en/support/announcement/c-48').content.decode()
+    regex_str = "<script id=\"__APP_DATA\" type=\"application\/json\">.*?<\/script>"
+    raw_json = re.findall(regex_str, decoded_page)[0][len("<script id=\"__APP_DATA\" type=\"application/json\">"):len("</script>")*-1]
+    j = json.loads(raw_json)
+    articles = [article['title'] for article in j["routeProps"]['b723']["navDataResource"][0]['articles']]
+    return articles
+
+
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-    write_to_file(my_file, get_last_listing())
+    write_to_file(my_file, scrape_titles()[0])
     with open("./mailing_list.txt", 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
     while True:
-        current_listing = get_last_listing()
+        current_listing = scrape_titles()[0]
         if current_listing != read_last_listing(my_file):
             message = "Subject: " + current_listing + '\n'
             message += "\nhttps://www.binance.com/en/support/announcement/c-48"
