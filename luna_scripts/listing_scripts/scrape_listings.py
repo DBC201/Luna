@@ -32,8 +32,8 @@ def get_last_listing():
 
 def get_listing_time(code):
     html = requests.get('https://www.binance.com/en/support/announcement/'+code).content.decode()
-    regex_str = r"Binance will list .* in the Innovation Zone and will open trading for .* trading pairs at (.*)(UTC)"
-    return re.search(regex_str, html).group(1)[:-2]
+    regex_str = r"Binance will list .*? in the Innovation Zone and will open trading for .*? trading pairs at (.*?)\(UTC\)"
+    return re.search(regex_str, html).group(1).strip()
 
 
 if __name__ == '__main__':
@@ -54,6 +54,5 @@ if __name__ == '__main__':
                 ticker = re.search(r"\(.*?\)", current_listing).group(0)[1:-1]
                 t = get_listing_time(scrape_titles()[0]["code"])
                 # Then run the script
-                # Maybe email the user
             write_to_file(my_file, current_listing)
         time.sleep(60)

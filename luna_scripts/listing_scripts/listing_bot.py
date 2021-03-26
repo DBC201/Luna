@@ -29,16 +29,27 @@ sock_manager = BinanceSocketManager(client)
 
 client.API_URL = 'https://testnet.binance.vision/api'  # Test url, delete for real life usage
 
+IN = False
+IN_PRICE = sys.maxsize
+MAX_PRICE = 0
+DOUBLE_OUT = False
+TRIPLE_OUT = False
+DOUBLE_VAL = 0
+TRIPLE_VAL = 0
+BOTTOM_VAL = sys.maxsize
+BALANCE = 0
+START_TIME = 0
+
 
 def trade_callback(data):
     if data['p']:
         global IN, IN_PRICE, MAX_PRICE, DOUBLE_OUT, TRIPLE_OUT, DOUBLE_VAL, TRIPLE_VAL, BOTTOM_VAL
         global BUY_TYPE, SELL_TYPE, SPENDING_AMOUNT, BALANCE
         global START_TIME
-        current_price = data['p']
+        current_price = float(data['p'])
         MAX_PRICE = max(current_price, MAX_PRICE)
         if not IN:
-            IN_PRICE = data['p']
+            IN_PRICE = float(data['p'])
             client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
             DOUBLE_VAL = IN_PRICE * 2
             TRIPLE_VAL = IN_PRICE * 3
@@ -69,15 +80,4 @@ def trade_callback(data):
 
 
 trade_sock = sock_manager.start_trade_socket(symbol=SYMBOL, callback=trade_callback)
-
-IN = False
-IN_PRICE = sys.maxsize
-MAX_PRICE = 0
-DOUBLE_OUT = False
-TRIPLE_OUT = False
-DOUBLE_VAL = 0
-TRIPLE_VAL = 0
-BOTTOM_VAL = sys.maxsize
-BALANCE = 0
-START_TIME = 0
 sock_manager.run()
