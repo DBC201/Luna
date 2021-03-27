@@ -53,7 +53,7 @@ if __name__ == '__main__':
                 ticker = re.search(r"\(.*?\)", current_listing).group(0)[1:-1]
                 listing_time = time.mktime(dateparser.parse(get_listing_time(current_listing["code"])).timetuple())
             write_to_file(my_file, current_listing)
-        if listing_time is not None and time.time() + 60 > listing_time:
+        if listing_time is not None and time.time() + 60 >= listing_time:
             # run the program here
             pass
         time.sleep(60)
