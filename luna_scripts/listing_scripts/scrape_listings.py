@@ -22,13 +22,13 @@ def scrape_titles():
     decoded_page = requests.get('https://www.binance.com/en/support/announcement/c-48').content.decode()
     regex_str = r"<script id=\"__APP_DATA\" type=\"application\/json\">.*?<\/script>"
     raw_json = re.findall(regex_str, decoded_page)[0][
-               len("<script id=\"__APP_DATA\" type=\"application/json\">"):len("</script>")*-1]
+               len("<script id=\"__APP_DATA\" type=\"application/json\">"):len("</script>") * -1]
     j = json.loads(raw_json)
     return j["routeProps"]['b723']["navDataResource"][0]['articles']
 
 
 def get_listing_time(code):
-    html = requests.get('https://www.binance.com/en/support/announcement/'+code).content.decode()
+    html = requests.get('https://www.binance.com/en/support/announcement/' + code).content.decode()
     regex_str = r"Binance will list .*? in the Innovation Zone and will open trading for .*? trading pairs at (.*?) \((.*?)\)"
     return ' '.join(re.search(regex_str, html).groups())
 
@@ -36,7 +36,7 @@ def get_listing_time(code):
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-    write_to_file(my_file, scrape_titles()[0]["title"]) # listing bot won't auto start if the listing has been alr made
+    write_to_file(my_file, scrape_titles()[0]["title"])  # listing bot won't auto start if the listing has been alr made
     with open("./mailing_list.txt", 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
@@ -54,5 +54,5 @@ if __name__ == '__main__':
                 listing_time = time.mktime(dateparser.parse(get_listing_time(current_listing["code"])).timetuple())
             write_to_file(my_file, current_listing)
         if listing_time is not None and time.time() + 60 >= listing_time:
-           listing_time = None
+            listing_time = None
         time.sleep(60)
