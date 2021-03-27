@@ -6,7 +6,7 @@ from binance.client import Client
 from binance.websockets import BinanceSocketManager
 import time
 import math
-
+from twisted.internet import reactor
 
 def return_parser():
     parser = argparse.ArgumentParser(description="Auto buy listing")
@@ -28,8 +28,6 @@ load_dotenv(dotenv_path=env_path)
 client = Client(os.environ["api_key"], os.environ["api_secret"])
 sock_manager = BinanceSocketManager(client)
 
-client.API_URL = 'https://testnet.binance.vision/api'  # Test url, delete for real life usage
-
 IN = False
 IN_PRICE = sys.maxsize
 MAX_PRICE = 0
@@ -50,6 +48,16 @@ def round_down(number, decimals):
 
 
 SPENDING_AMOUNT = round_down(SPENDING_AMOUNT, symbol_info["quoteAssetPrecision"])
+min_amount = float(symbol_info["filters"][3]["minNotional"])
+min_amount += min_amount*0.005 + min_amount*0.05  # trading fee and min exit margin for getting out of stop loss
+# stop loss still might fail in case of drastic price drops if the value drops below min notional
+if SPENDING_AMOUNT <= min_amount:
+    raise RuntimeError("You must spend more than " + str(min_amount))
+
+
+def shutdown(code=0):
+    reactor.stop()
+    sys.exit(code)
 
 
 def trade_callback(data):
@@ -59,35 +67,44 @@ def trade_callback(data):
         global START_TIME
         current_price = float(data['p'])
         MAX_PRICE = max(current_price, MAX_PRICE)
-        if not IN:
-            IN_PRICE = float(data['p'])
-            client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
-            DOUBLE_VAL = IN_PRICE * 2
-            TRIPLE_VAL = IN_PRICE * 3
-            BOTTOM_VAL = IN_PRICE * 0.95
+        try:
+            if not IN:
+                IN_PRICE = current_price
+                client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
+                DOUBLE_VAL = IN_PRICE * 2
+                TRIPLE_VAL = IN_PRICE * 3
+                BOTTOM_VAL = IN_PRICE * 0.95
+                BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
+                IN = True
+                START_TIME = time.time()
+            else:
+                if current_price <= BOTTOM_VAL:
+                    client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+                    shutdown()
+                elif not DOUBLE_OUT and current_price >= DOUBLE_VAL:
+                    to_sell = round_down(BALANCE*0.5, BASE_PRECISION)
+                    client.order_market_sell(symbol=SYMBOL, quantity=to_sell)
+                    BALANCE = to_sell
+                    DOUBLE_OUT = True
+                elif not TRIPLE_OUT and current_price >= TRIPLE_VAL:
+                    to_sell = round_down(BALANCE*0.75, BASE_PRECISION)
+                    client.order_market_sell(symbol=SYMBOL, quantity=to_sell)
+                    BALANCE -= to_sell
+                    BALANCE = round_down(BALANCE, BASE_PRECISION)
+                    TRIPLE_OUT = True
+                elif DOUBLE_OUT and TRIPLE_OUT and current_price <= MAX_PRICE * 0.95:
+                    client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+                    shutdown()
+                elif time.time() - START_TIME >= 58:
+                    client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+                    shutdown()
+        except Exception as e:
+            print(e)
             BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
-            IN = True
-            START_TIME = time.time()
-        else:
-            if current_price <= BOTTOM_VAL:
-                client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
-                sys.exit()
-            elif not DOUBLE_OUT and current_price >= DOUBLE_VAL:
-                BALANCE = round_down(BALANCE*0.5, BASE_PRECISION)
-                client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
-                DOUBLE_OUT = True
-            elif not TRIPLE_OUT and current_price >= TRIPLE_VAL:
-                to_sell = round_down(BALANCE*0.75, BASE_PRECISION)
-                client.order_market_sell(symbol=SYMBOL, quantity=to_sell)
-                BALANCE -= to_sell
-                BALANCE = round_down(BALANCE, BASE_PRECISION)
-                TRIPLE_OUT = True
-            elif DOUBLE_OUT and TRIPLE_OUT and current_price <= MAX_PRICE * 0.95: # i don't like this multiplication here slows down?
-                client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
-                sys.exit()
-            elif time.time() - START_TIME >= 58:
-                client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
-                sys.exit()
+            # getting balance this way is slow but safer since we have encountered an error
+            client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+            # do something to confirm the sell order or notify the user
+            shutdown(-1)
     else:
         print("no trades")
 
