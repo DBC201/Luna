@@ -36,7 +36,7 @@ def get_listing_time(code):
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-    write_to_file(my_file, scrape_titles()[0]["title"])
+    write_to_file(my_file, scrape_titles()[0]["title"]) # listing bot won't auto start if the listing has been alr made
     with open("./mailing_list.txt", 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
@@ -54,6 +54,5 @@ if __name__ == '__main__':
                 listing_time = time.mktime(dateparser.parse(get_listing_time(current_listing["code"])).timetuple())
             write_to_file(my_file, current_listing)
         if listing_time is not None and time.time() + 60 >= listing_time:
-            # run the program here
-            pass
+           listing_time = None
         time.sleep(60)
