@@ -4,6 +4,7 @@ import time
 import send_mail
 import re
 import json
+import dateparser
 
 
 def write_to_file(file_name, content):
@@ -26,33 +27,33 @@ def scrape_titles():
     return j["routeProps"]['b723']["navDataResource"][0]['articles']
 
 
-def get_last_listing():
-    return scrape_titles()[0]["title"]
-
-
 def get_listing_time(code):
     html = requests.get('https://www.binance.com/en/support/announcement/'+code).content.decode()
-    regex_str = r"Binance will list .*? in the Innovation Zone and will open trading for .*? trading pairs at (.*?)\(UTC\)"
-    return re.search(regex_str, html).group(1).strip()
+    regex_str = r"Binance will list .*? in the Innovation Zone and will open trading for .*? trading pairs at (.*?) \((.*?)\)"
+    return ' '.join(re.search(regex_str, html).groups())
 
 
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-    write_to_file(my_file, get_last_listing())
+    write_to_file(my_file, scrape_titles()[0]["title"])
     with open("./mailing_list.txt", 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
+    listing_time = None
+
     while True:
-        current_listing = get_last_listing()
-        if current_listing != read_last_listing(my_file):
+        current_listing = scrape_titles()[0]
+        if current_listing["title"] != read_last_listing(my_file):
             message = "Subject: " + current_listing + '\n'
             message += "\nhttps://www.binance.com/en/support/announcement/c-48"
             for email in emails:
                 send_mail.send(email, message)
-            if "Innovation Zone" in current_listing:
+            if "Innovation Zone" in current_listing["title"]:
                 ticker = re.search(r"\(.*?\)", current_listing).group(0)[1:-1]
-                t = get_listing_time(scrape_titles()[0]["code"])
-                # Then run the script
+                listing_time = time.mktime(dateparser.parse(get_listing_time(current_listing["code"])).timetuple())
             write_to_file(my_file, current_listing)
+        if listing_time is not None and time.time() + 60 > listing_time:
+            # run the program here
+            pass
         time.sleep(60)
