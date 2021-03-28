@@ -7,7 +7,7 @@ if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
     scrape_functions.write_to_file(my_file, scrape_functions.scrape_titles()[0]["title"])
-    with open("./mailing_list.txt", 'r') as file:
+    with open(os.path.join(THIS_FOLDER, "mailing_list.txt"), 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
     listing_time = None
