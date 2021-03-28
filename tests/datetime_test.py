@@ -5,6 +5,7 @@ import re
 import time
 import calendar
 
+
 def scrape_titles():
     decoded_page = requests.get('https://www.binance.com/en/support/announcement/c-48').content.decode()
     regex_str = r"<script id=\"__APP_DATA\" type=\"application\/json\">.*?<\/script>"
