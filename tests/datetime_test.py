@@ -3,7 +3,7 @@ import dateparser
 import json
 import re
 import time
-
+import calendar
 
 def scrape_titles():
     decoded_page = requests.get('https://www.binance.com/en/support/announcement/c-48').content.decode()
@@ -21,6 +21,13 @@ def get_listing_time(code):
 
 
 if __name__ == '__main__':
-    raw_time = get_listing_time(scrape_titles()[0]["code"])
-    parsed_time = time.mktime(dateparser.parse(raw_time).timetuple())
-    print(parsed_time, time.time())
+    raw_time = "2021-28-3 11:46:31 UTC"
+    parsed_time = dateparser.parse(raw_time)
+    epoch_time = calendar.timegm(parsed_time.timetuple())
+    while True:
+        current_time = time.time()
+        print(current_time, epoch_time)
+        if current_time >= epoch_time:
+            print(time.localtime())
+            break
+        time.sleep(1)

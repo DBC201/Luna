@@ -5,6 +5,7 @@ import send_mail
 import re
 import json
 import dateparser
+import calendar
 
 
 def write_to_file(file_name, content):
@@ -51,7 +52,7 @@ if __name__ == '__main__':
                 send_mail.send(email, message)
             if "Innovation Zone" in current_listing["title"]:
                 ticker = re.search(r"\(.*?\)", current_listing).group(0)[1:-1]
-                listing_time = time.mktime(dateparser.parse(get_listing_time(current_listing["code"])).timetuple())
+                listing_time = calendar.timegm(dateparser.parse(get_listing_time(current_listing["code"])).timetuple())
             write_to_file(my_file, current_listing)
         if listing_time is not None and time.time() + 60 >= listing_time:
             listing_time = None
