@@ -102,7 +102,8 @@ def trade_callback(data):
             print(e)
             BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
             # getting balance this way is slow but safer since we have encountered an error
-            client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+            if BALANCE > min_amount:
+                client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
             # do something to confirm the sell order or notify the user
             shutdown(-1)
     else:

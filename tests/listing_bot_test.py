@@ -107,7 +107,7 @@ def trade_callback(data):
         except Exception as e:
             print(e)
             BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
-            sell_order = client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+            client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
             shutdown(-1)
     else:
         print("no trades")
