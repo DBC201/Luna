@@ -6,7 +6,8 @@ import scrape_functions
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join(THIS_FOLDER, "last-new-listing.txt")
-    scrape_functions.write_to_file(my_file, scrape_functions.scrape_titles()[0]["title"])  # listing bot won't auto start if the listing has been alr made
+    # first fetch will be ignored if below line is not commented
+    # scrape_functions.write_to_file(my_file, scrape_functions.scrape_titles()[0]["title"])
     with open("./mailing_list.txt", 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
@@ -14,8 +15,13 @@ if __name__ == '__main__':
 
     while True:
         current_listing = scrape_functions.scrape_titles()[0]
-        if current_listing["title"] != scrape_functions.read_last_listing(my_file):
-            message = "Subject: " + current_listing["title"] + '\n'
+        announcement_is_new = current_listing["title"] != scrape_functions.read_last_listing(my_file)
+        is_listing_announcement = "Innovation Zone" in current_listing["title"]
+        if announcement_is_new and is_listing_announcement:
+            coin_name = scrape_functions.get_coin_name(current_listing["title"])
+            time_str = scrape_functions.get_listing_time(current_listing["code"])
+            message = "Subject: " + f"Binance will list {coin_name} on {time_str}\n"
+            message += '\n' + current_listing["title"]
             message += "\nhttps://www.binance.com/en/support/announcement/c-48"
             for email in emails:
                 send_mail.send(email, message)
