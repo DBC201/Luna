@@ -15,9 +15,8 @@ if __name__ == '__main__':
     while True:
         current_listing = scrape_functions.scrape_titles()[0]
         announcement_is_new = current_listing["title"] != scrape_functions.read_last_listing(my_file)
-        is_listing_announcement = "Innovation Zone" in current_listing["title"]
-        if announcement_is_new and is_listing_announcement:
-            coin_name = scrape_functions.get_coin_name(current_listing["title"])
+        coin_name = scrape_functions.get_coin_name(current_listing["title"])
+        if announcement_is_new and coin_name:
             time_str = scrape_functions.get_listing_time(current_listing["code"])
             message = "Subject: " + f"Binance will list {coin_name} on {time_str}\n"
             message += '\n' + current_listing["title"]
