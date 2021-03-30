@@ -34,4 +34,8 @@ def get_listing_time(code): # maybe have it return trading pairs as well in the 
 
 
 def get_coin_name(title):
-    return re.search(r"\wist (.*?) \((\w+)\)", title).group(2)
+    search_result = re.search(r"\wist (.*?) \((\w+)\)", title)
+    if search_result:
+        return search_result.group(2)
+    else:
+        return None
