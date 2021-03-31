@@ -49,7 +49,7 @@ def round_down(number, decimals):
 
 SPENDING_AMOUNT = round_down(SPENDING_AMOUNT, symbol_info["quoteAssetPrecision"])
 min_amount = float(symbol_info["filters"][3]["minNotional"])
-min_amount += min_amount*0.005 + min_amount*0.1  # trading fee and min exit margin for getting out of stop loss
+min_amount += min_amount*0.1 + min_amount*0.05  # trading fee and min exit margin for getting out of stop loss
 # stop loss still might fail in case of drastic price drops if the value drops below min notional
 if SPENDING_AMOUNT <= min_amount:
     raise RuntimeError("You must spend more than " + str(min_amount))
