@@ -49,7 +49,7 @@ def round_down(number, decimals):
 
 SPENDING_AMOUNT = round_down(SPENDING_AMOUNT, symbol_info["quoteAssetPrecision"])
 min_amount = float(symbol_info["filters"][3]["minNotional"])
-min_amount += min_amount*0.005 + min_amount*0.05  # trading fee and min exit margin for getting out of stop loss
+min_amount += min_amount*0.005 + min_amount*0.1  # trading fee and min exit margin for getting out of stop loss
 # stop loss still might fail in case of drastic price drops if the value drops below min notional
 if SPENDING_AMOUNT <= min_amount:
     raise RuntimeError("You must spend more than " + str(min_amount))
@@ -102,8 +102,7 @@ def trade_callback(data):
             print(e)
             BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
             # getting balance this way is slow but safer since we have encountered an error
-            if BALANCE > min_amount:
-                client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
+            client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
             # do something to confirm the sell order or notify the user
             shutdown(-1)
     else:
