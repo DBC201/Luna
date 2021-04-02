@@ -4,6 +4,13 @@ import dateparser
 import calendar
 import send_mail
 import scrape_functions
+import shlex, subprocess
+from binance.client import Client
+from dotenv import load_dotenv
+
+ENV_PATH = "../../.env.local"
+load_dotenv(dotenv_path=ENV_PATH)
+client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +20,7 @@ if __name__ == '__main__':
         emails = [email.strip() for email in file.readlines()]
 
     listing_time = None
+    coin_name = None
 
     while True:
         current_listing = scrape_functions.scrape_titles()[0]
@@ -30,6 +38,11 @@ if __name__ == '__main__':
                 listing_time = calendar.timegm(dateparser.parse(time_str).timetuple())
             scrape_functions.write_to_file(my_file, current_listing["title"])
         if listing_time is not None and time.time() + 60 >= listing_time:
-            # run script here
+            balance = client.get_asset_balance(asset="USDT")["free"]
+            bot = subprocess.Popen(
+                shlex.split(f"python listing_bot.py {coin_name} USDT {balance} {ENV_PATH}"),
+                shell=True
+            )
             listing_time = None
+            coin_name = None
         time.sleep(60)
