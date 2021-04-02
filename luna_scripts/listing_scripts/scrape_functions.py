@@ -25,10 +25,10 @@ def scrape_titles():
 
 def get_listing_time(code): # maybe have it return trading pairs as well in the future
     html = requests.get('https://www.binance.com/en/support/announcement/' + code).content.decode()
-    regex_str = r"Binance will list .*? and will open trading for .*? trading pairs at (.*?) \((.*?)\)"
+    regex_str = r"Binance will list .*? and will open trading for .*? trading pairs at (\d+-\d+-\d+ \d+:\d+:?\d* AM \(.*?\))"
     search_result = re.search(regex_str, html)
     if search_result:
-        return ' '.join(re.search(regex_str, html).groups())
+        return re.search(regex_str, html).group(1)
     else:
         return None
 

@@ -20,13 +20,14 @@ if __name__ == '__main__':
         if announcement_is_new:
             coin_name = scrape_functions.get_coin_name(current_listing["title"])
             if coin_name:
+                time_str = scrape_functions.get_listing_time(current_listing["code"])
                 message = "Subject: " + f"Binance will list {coin_name} on {time_str}\n"
                 message += '\n' + current_listing["title"]
                 message += "\nhttps://www.binance.com/en/support/announcement/c-48"
                 for email in emails:
                     send_mail.send(email, message)
                 ticker = scrape_functions.get_coin_name(current_listing)
-                listing_time = calendar.timegm(dateparser.parse(scrape_functions.get_listing_time(current_listing["code"])).timetuple())
+                listing_time = calendar.timegm(dateparser.parse(time_str).timetuple())
             scrape_functions.write_to_file(my_file, current_listing["title"])
         if listing_time is not None and time.time() + 60 >= listing_time:
             # run script here
