@@ -8,6 +8,7 @@ import time
 import math
 from twisted.internet import reactor
 
+
 def return_parser():
     parser = argparse.ArgumentParser(description="Auto buy listing")
     parser.add_argument("buy_type", type=str, help="Coin to buy (ex:BTC)")
