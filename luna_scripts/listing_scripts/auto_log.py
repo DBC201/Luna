@@ -18,6 +18,9 @@ if __name__ == '__main__':
     save_folder = "../../trades"
     coin_name = None
 
+    if not os.path.exists(save_folder):
+        os.mkdir(save_folder)
+
     while True:
         current_listing = scrape_functions.scrape_titles()[0]
         announcement_is_new = current_listing["title"] != last_listing["title"]
