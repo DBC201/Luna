@@ -28,7 +28,7 @@ def get_listing_time(code): # maybe have it return trading pairs as well in the 
     regex_str = r"Binance will list .*? and will open trading for .*? trading pairs at (\d+-\d+-\d+ \d+:\d+:?\d* AM \(.*?\))"
     search_result = re.search(regex_str, html)
     if search_result:
-        return re.search(regex_str, html).group(1)
+        return re.search(regex_str, html).groups()
     else:
         return None
 
