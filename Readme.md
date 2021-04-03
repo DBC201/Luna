@@ -1,6 +1,5 @@
 # LUNA
-
-Luna is a program consisting of different modules and scripts for binance using python-binance library, however we tried
+- [Luna](https://github.com/DBC201/Luna) is a program consisting of different modules and scripts for binance using python-binance library, however we tried
 to make it modular as much as we could and luna_modules can be used anywhere with the right input format.
 
 ## Dependencies
@@ -28,3 +27,8 @@ Instead just install the listed dependencies manually by doing
     -  ```sudo apt install pip``` (check if pip is installed)
     - ```pip install python-dotenv```
     - ```pip install python-binance```
+
+
+## Creators
+- [Atilla Turkmen](https://github.com/atillaturkmen)
+- [Deniz Cakiroglu](https://github.com/DBC201)
