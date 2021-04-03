@@ -1,6 +1,5 @@
 # LUNA
-## What is Luna?
-- [Luna](https://github.com/DBC201/Luna) is a program consisting of different modules and scripts for binance using python-binance library. However
+[Luna](https://github.com/DBC201/Luna) is a program consisting of different modules and scripts for binance using python-binance library. However
 the modules should work with the right input format which have been documented in the relative folder.
 
 ## Dependencies
