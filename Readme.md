@@ -25,6 +25,6 @@ to make it modular as much as we could and luna_modules can be used anywhere wit
 most of the programs seem to work fine. If not one option could be [using deadsnakes](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa).
 - Pipenv file is only for windows only since it installs the twisted file manually. Hence pipenv install shouldn't be run.
 Instead just install the listed dependencies manually by doing
-    -  ```bash sudo apt install pip``` (check if pip is installed)
-    - ```bash pip install python-dotenv```
-    - ```bash pip install python-binance```
+    -  ```sudo apt install pip``` (check if pip is installed)
+    - ```pip install python-dotenv```
+    - ```pip install python-binance```
