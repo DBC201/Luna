@@ -33,7 +33,7 @@ if __name__ == '__main__':
         if listing_time is not None and time.time() + 60 >= listing_time:
             symbol = coin_name+"USDT"
             bot = subprocess.Popen(
-                shlex.split(f"python log_listing.py {symbol} {save_folder} {ENV_PATH}"),
+                shlex.split(f"python3 log_listing.py {symbol} {save_folder} {ENV_PATH}"),
                 shell=True,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE

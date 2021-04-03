@@ -1,6 +1,5 @@
 # LUNA
-
-Luna is a program consisting of different modules and scripts for binance using python-binance library, however we tried
+- [Luna](https://github.com/DBC201/Luna) is a program consisting of different modules and scripts for binance using python-binance library, however we tried
 to make it modular as much as we could and luna_modules can be used anywhere with the right input format.
 
 ## Dependencies
@@ -19,3 +18,17 @@ to make it modular as much as we could and luna_modules can be used anywhere wit
             ![mscv download](./docs/pictures/visual%20studio%20developer%20tools%20turkish.png)
         - Windows sdk:
             ![sdk_download](./docs/pictures/latest%20windows%2010%20sdk.png)
+            
+## For Ubuntu
+- At the time of this readme, Ubuntu repositories only have python up to 3.8. However this doesn't pose an issue and
+most of the programs seem to work fine. If not one option could be [using deadsnakes](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa).
+- Pipenv file is only for windows only since it installs the twisted file manually. Hence pipenv install shouldn't be run.
+Instead just install the listed dependencies manually by doing
+    -  ```sudo apt install pip``` (check if pip is installed)
+    - ```pip install python-dotenv```
+    - ```pip install python-binance```
+
+
+## Creators
+- [Atilla Turkmen](https://github.com/atillaturkmen)
+- [Deniz Cakiroglu](https://github.com/DBC201)
