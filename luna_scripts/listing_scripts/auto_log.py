@@ -15,9 +15,8 @@ if __name__ == '__main__':
     scraper = BinanceAnnouncementScrape()
     last_announcement = scraper.get_announcement()
     listing_time = None
-    symbol = None
     save_folder = "../../trades"
-    coin_name = None
+    symbols = None
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -27,19 +26,19 @@ if __name__ == '__main__':
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            coins = scraper.get_coin_names()
-            if coins:
-                coin_name = coins[0]
+            symbols = scraper.get_symbols()
+            if symbols:
                 time_str = scraper.get_listing_date()
                 listing_time = calendar.timegm(dateparser.parse(time_str).timetuple())
         if listing_time is not None and time.time() + 60 >= listing_time:
-            symbol = coin_name+"USDT"
-            bot = subprocess.Popen(
-                shlex.split(f"python3 log_listing.py {symbol} {save_folder} {ENV_PATH}"),
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE
-            )
+            for symbol in symbols:
+                for quote in symbols[symbol]:
+                    bot = subprocess.Popen(
+                        shlex.split(f"python3 log_listing.py {symbol+quote} {save_folder} {ENV_PATH}"),
+                        shell=True,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE
+                    )
             listing_time = None
             coin_name = None
         last_announcement = current_announcement
