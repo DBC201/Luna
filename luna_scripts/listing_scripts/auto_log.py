@@ -40,6 +40,6 @@ if __name__ == '__main__':
                         stderr=subprocess.PIPE
                     )
             listing_time = None
-            coin_name = None
+            symbols = None
         last_announcement = current_announcement
         time.sleep(60)
