@@ -1,26 +1,29 @@
 import os
 import time
 import send_mail
-import scrape_functions
+from BinanceAnnouncementScrape import BinanceAnnouncementScrape
 
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(THIS_FOLDER, "mailing_list.txt"), 'r') as file:
         emails = [email.strip() for email in file.readlines()]
 
-    last_listing = scrape_functions.scrape_titles()[0]
+    scraper = BinanceAnnouncementScrape()
+
+    last_announcement = scraper.get_announcement()
 
     while True:
-        current_listing = scrape_functions.scrape_titles()[0]
-        announcement_is_new = current_listing["title"] != last_listing["title"]
+        scraper.refresh()
+        current_announcement = scraper.get_announcement()
+        announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            coin_name = scrape_functions.get_coin_name(current_listing["title"])
-            if coin_name:
-                time_str = scrape_functions.get_listing_time(current_listing["code"])
-                message = "Subject: " + f"Binance will list {coin_name} on {time_str}\n"
-                message += '\n' + current_listing["title"]
+            coins = scraper.get_coin_names()
+            if coins:
+                time_str = scraper.get_listing_date()
+                message = "Subject: " + f"Binance will list {coins[0]} on {time_str}\n"
+                message += '\n' + current_announcement
                 message += "\nhttps://www.binance.com/en/support/announcement/c-48"
                 for email in emails:
                     send_mail.send(email, message)
         time.sleep(60)
-        last_listing = current_listing
+        last_announcement = current_announcement
