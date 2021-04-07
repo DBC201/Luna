@@ -2,7 +2,7 @@ import os
 import time
 import dateparser
 import calendar
-import scrape_functions
+from BinanceAnnouncementScrape import BinanceAnnouncementScrape
 import shlex, subprocess
 from binance.client import Client
 from dotenv import load_dotenv
@@ -12,7 +12,8 @@ load_dotenv(dotenv_path=ENV_PATH)
 client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 if __name__ == '__main__':
-    last_listing = scrape_functions.scrape_titles()[0]
+    scraper = BinanceAnnouncementScrape()
+    last_announcement = scraper.get_announcement()
     listing_time = None
     symbol = None
     save_folder = "../../trades"
@@ -22,13 +23,14 @@ if __name__ == '__main__':
         os.mkdir(save_folder)
 
     while True:
-        current_listing = scrape_functions.scrape_titles()[0]
-        announcement_is_new = current_listing["title"] != last_listing["title"]
+        scraper.refresh()
+        current_announcement = scraper.get_announcement()
+        announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            coin_name = scrape_functions.get_coin_name(current_listing["title"])
-            if coin_name:
-                time_str = scrape_functions.get_listing_time(current_listing["code"])
-                ticker = scrape_functions.get_coin_name(current_listing)
+            coins = scraper.get_coin_names()
+            if coins:
+                coin_name = coins[0]
+                time_str = scraper.get_listing_date()
                 listing_time = calendar.timegm(dateparser.parse(time_str).timetuple())
         if listing_time is not None and time.time() + 60 >= listing_time:
             symbol = coin_name+"USDT"
@@ -40,5 +42,5 @@ if __name__ == '__main__':
             )
             listing_time = None
             coin_name = None
-        last_listing = current_listing
+        last_announcement = current_announcement
         time.sleep(60)
