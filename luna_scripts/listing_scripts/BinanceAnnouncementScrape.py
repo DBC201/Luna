@@ -19,7 +19,7 @@ class BinanceAnnouncementScrape:
 
     def __get_symbol_info(self):
         html = requests.get('https://www.binance.com/en/support/announcement/' + self.__last_title["code"]).content.decode()
-        regex_str = r"and will open trading for (\w+\/\w+,?\s?)+(and\s\w+\/\w+\s)?trading pairs at \d+-\d+-\d+ \d+:\d+:?\d* AM \(.*?\)"
+        regex_str = r"open trading for (\w+\/\w+,?\s?)+(and\s\w+\/\w+\s)?trading pairs at \d+-\d+-\d+ \d+:\d+:?\d* \w\w \(.*?\)"
         search_result = re.search(regex_str, html)
         if search_result:
             return search_result.group(0)
@@ -47,7 +47,7 @@ class BinanceAnnouncementScrape:
     def get_listing_date(self):
         if self.__symbol_info is None:
             return None
-        regex_str = r"\d+-\d+-\d+ \d+:\d+:?\d* AM \(.*?\)"
+        regex_str = r"\d+-\d+-\d+ \d+:\d+:?\d* \w\w \(.*?\)"
         search_result = re.search(regex_str, self.__symbol_info)
         if search_result:
             return search_result.group(0)
@@ -60,11 +60,3 @@ class BinanceAnnouncementScrape:
 
     def get_announcement(self):
         return self.__last_title["title"]
-
-    def get_coin_names(self):
-        if "Binance Will List" in self.__last_title:
-            names = re.findall(r"\(\w+\)", self.__last_title["title"])
-            names = [n[1:-1] for n in names]
-            return names
-        else:
-            return None

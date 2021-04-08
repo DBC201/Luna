@@ -17,11 +17,10 @@ if __name__ == '__main__':
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            coins = scraper.get_coin_names()
+            coins = scraper.get_symbols()
             if coins:
                 time_str = scraper.get_listing_date()
-                message = "Subject: " + f"Binance will list {coins[0]} on {time_str}\n"
-                message += '\n' + current_announcement
+                message = "Subject: " + f"{current_announcement} on {time_str}\n"
                 message += "\nhttps://www.binance.com/en/support/announcement/c-48"
                 for email in emails:
                     send_mail.send(email, message)
