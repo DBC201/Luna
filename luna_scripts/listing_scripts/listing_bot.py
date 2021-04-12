@@ -74,7 +74,7 @@ def trade_callback(data):
                 client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
                 DOUBLE_VAL = IN_PRICE * 2
                 TRIPLE_VAL = IN_PRICE * 3
-                BOTTOM_VAL = IN_PRICE * 0.95
+                BOTTOM_VAL = IN_PRICE * 0.87
                 BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
                 IN = True
                 START_TIME = time.time()
@@ -93,7 +93,7 @@ def trade_callback(data):
                     BALANCE -= to_sell
                     BALANCE = round_down(BALANCE, BASE_PRECISION)
                     TRIPLE_OUT = True
-                elif DOUBLE_OUT and TRIPLE_OUT and current_price <= MAX_PRICE * 0.95:
+                elif DOUBLE_OUT and TRIPLE_OUT and current_price <= MAX_PRICE * 0.87:
                     client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
                     shutdown()
                 elif time.time() - START_TIME >= 58:
@@ -102,9 +102,7 @@ def trade_callback(data):
         except Exception as e:
             print(e)
             BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
-            # getting balance this way is slow but safer since we have encountered an error
             client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
-            # do something to confirm the sell order or notify the user
             shutdown(-1)
     else:
         print("no trades")
