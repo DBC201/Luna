@@ -18,7 +18,7 @@ def return_parser():
 
 
 args = return_parser().parse_args(sys.argv[1:])
-SYMBOL = args.symbol
+SYMBOL = args.symbol.upper()
 env_path = args.env_path
 load_dotenv(dotenv_path=env_path)
 client = Client(os.environ["api_key"], os.environ["api_secret"])

@@ -9,7 +9,7 @@ client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 
 if __name__ == '__main__':
-    symbol = "BTCUSDT"
+    symbol = "ethusdt"
     save_path = "../trades"
     process = subprocess.Popen(
         shlex.split(f"python ../luna_scripts/listing_scripts/log_listing.py {symbol} {save_path} {ENV_PATH} -d 3"),
