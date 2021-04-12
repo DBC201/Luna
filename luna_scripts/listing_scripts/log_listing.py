@@ -37,13 +37,19 @@ def shutdown():
 
 
 def trade_callback(data):
-    global START, TRADES
-    TRADES.append(data)
-    if time.time() - START >= 60:
-        shutdown()
+    global START, TRADES, TRADE_INIT
+    if data:
+        if not TRADE_INIT:
+            TRADE_INIT = True
+            START = time.time()
+        else:
+            TRADES.append(data)
+            if time.time() - START >= 60:
+                shutdown()
 
 
 sock_manager = BinanceSocketManager(client)
 trade_sock = sock_manager.start_trade_socket(symbol=SYMBOL, callback=trade_callback)
-START = time.time()
+TRADE_INIT = False
+START = sys.maxsize
 sock_manager.run()
