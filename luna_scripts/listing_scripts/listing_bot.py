@@ -39,8 +39,10 @@ TRIPLE_VAL = 0
 BOTTOM_VAL = sys.maxsize
 BALANCE = 0
 START_TIME = 0
-symbol_info = client.get_symbol_info(SYMBOL)
-BASE_PRECISION = symbol_info["baseAssetPrecision"]
+# in case symbol info not available early on
+# symbol_info = client.get_symbol_info(SYMBOL)
+# BASE_PRECISION = symbol_info["baseAssetPrecision"]
+BASE_PRECISION = 8
 
 
 def round_down(number, decimals):
@@ -48,12 +50,14 @@ def round_down(number, decimals):
     return math.floor(number * factor) / factor
 
 
+'''
 SPENDING_AMOUNT = round_down(SPENDING_AMOUNT, symbol_info["quoteAssetPrecision"])
 min_amount = float(symbol_info["filters"][3]["minNotional"])
 min_amount += min_amount*0.1 + min_amount*0.05  # trading fee and min exit margin for getting out of stop loss
 # stop loss still might fail in case of drastic price drops if the value drops below min notional
 if SPENDING_AMOUNT <= min_amount:
     raise RuntimeError("You must spend more than " + str(min_amount))
+'''
 
 
 def shutdown(code=0):
@@ -62,7 +66,7 @@ def shutdown(code=0):
 
 
 def trade_callback(data):
-    if data['p']:
+    if isinstance(data, dict) and 'p' in data:
         global IN, IN_PRICE, MAX_PRICE, DOUBLE_OUT, TRIPLE_OUT, DOUBLE_VAL, TRIPLE_VAL, BOTTOM_VAL
         global BUY_TYPE, SELL_TYPE, SPENDING_AMOUNT, BALANCE, BASE_PRECISION
         global START_TIME
@@ -77,6 +81,7 @@ def trade_callback(data):
                 DOUBLE_VAL = IN_PRICE * 2
                 TRIPLE_VAL = IN_PRICE * 3
                 BOTTOM_VAL = IN_PRICE * 0.87
+                BASE_PRECISION = client.get_symbol_info(SYMBOL)["baseAssetPrecision"]
                 BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
             else:
                 if not DOUBLE_OUT and current_price >= DOUBLE_VAL:
@@ -101,8 +106,6 @@ def trade_callback(data):
             BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
             client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
             shutdown(-1)
-    else:
-        print("no trades")
 
 
 trade_sock = sock_manager.start_trade_socket(symbol=SYMBOL, callback=trade_callback)
