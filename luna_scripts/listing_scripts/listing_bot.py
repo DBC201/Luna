@@ -72,17 +72,14 @@ def trade_callback(data):
             if not IN:
                 IN_PRICE = current_price
                 client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
+                IN = True
+                START_TIME = time.time()
                 DOUBLE_VAL = IN_PRICE * 2
                 TRIPLE_VAL = IN_PRICE * 3
                 BOTTOM_VAL = IN_PRICE * 0.87
                 BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
-                IN = True
-                START_TIME = time.time()
             else:
-                if current_price <= BOTTOM_VAL:
-                    client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
-                    shutdown()
-                elif not DOUBLE_OUT and current_price >= DOUBLE_VAL:
+                if not DOUBLE_OUT and current_price >= DOUBLE_VAL:
                     to_sell = round_down(BALANCE*0.5, BASE_PRECISION)
                     client.order_market_sell(symbol=SYMBOL, quantity=to_sell)
                     BALANCE = to_sell
@@ -93,7 +90,7 @@ def trade_callback(data):
                     BALANCE -= to_sell
                     BALANCE = round_down(BALANCE, BASE_PRECISION)
                     TRIPLE_OUT = True
-                elif DOUBLE_OUT and TRIPLE_OUT and current_price <= MAX_PRICE * 0.87:
+                elif current_price <= MAX_PRICE * 0.87:
                     client.order_market_sell(symbol=SYMBOL, quantity=BALANCE)
                     shutdown()
                 elif time.time() - START_TIME >= 58:
