@@ -13,6 +13,7 @@ def return_parser():
     parser.add_argument("symbol", type=str, help="trades to log (ex:BTCUSDT)")
     parser.add_argument("dump_path", type=str, help="directory to dump trades")
     parser.add_argument("env_path", type=str, help="file path for env variables")
+    parser.add_argument("-d", "--duration", type=int, dest="duration", help="time in seconds")
     return parser
 
 
@@ -21,6 +22,9 @@ SYMBOL = args.symbol
 env_path = args.env_path
 load_dotenv(dotenv_path=env_path)
 client = Client(os.environ["api_key"], os.environ["api_secret"])
+DURATION = 60 # in seconds
+if args.duration:
+    DURATION = args.duration
 TRADES = []
 
 
@@ -44,7 +48,7 @@ def trade_callback(data):
             START = time.time()
         else:
             TRADES.append(data)
-            if time.time() - START >= 60:
+            if time.time() - START >= DURATION:
                 shutdown()
 
 
