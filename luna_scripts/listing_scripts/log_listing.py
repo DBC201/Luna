@@ -26,6 +26,8 @@ DURATION = 60 # in seconds
 if args.duration:
     DURATION = args.duration
 TRADES = []
+TRADE_INIT = False
+START = sys.maxsize
 
 
 def shutdown():
@@ -54,6 +56,4 @@ def trade_callback(data):
 
 sock_manager = BinanceSocketManager(client)
 trade_sock = sock_manager.start_trade_socket(symbol=SYMBOL, callback=trade_callback)
-TRADE_INIT = False
-START = sys.maxsize
 sock_manager.run()
