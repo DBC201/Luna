@@ -1,6 +1,6 @@
 .env.local
 .idea
 __pycache__/
-outputs
+outputs/
 trades/
 luna_scripts/listing_scripts/mailing_list.txt
