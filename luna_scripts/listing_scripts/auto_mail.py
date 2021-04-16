@@ -5,9 +5,12 @@ from BinanceAnnouncementScrape import BinanceAnnouncementScrape
 
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+    emails = []
     with open(os.path.join(THIS_FOLDER, "mailing_list.txt"), 'r') as file:
-        emails = [email.strip() for email in file.readlines()]
-
+        for email in file.readlines():
+            email = email.strip()
+            if email:
+                emails.append(email)
     scraper = BinanceAnnouncementScrape()
 
     last_announcement = scraper.get_announcement()
