@@ -18,7 +18,7 @@ if __name__ == '__main__':
     while True:
         scraper.refresh()
         current_announcement = scraper.get_announcement()
-        announcement_is_new = current_announcement != "dsfasdf"
+        announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
             coins = scraper.get_symbols()
             if coins:
