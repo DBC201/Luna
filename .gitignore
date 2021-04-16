@@ -4,3 +4,4 @@ __pycache__/
 outputs/
 trades/
 luna_scripts/listing_scripts/mailing_list.txt
+/gathered/.env.local

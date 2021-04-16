@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 def send(receiver_email, message):
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
-    sender_email = "lunamonke@gmail.com"  # Enter your address
     load_dotenv(dotenv_path="../../.env.local")
+    sender_email = os.environ["email"]
     password = os.environ["email_password"]
 
     context = ssl.create_default_context()
