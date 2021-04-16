@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 for quote in symbols[symbol]:
                     bot = subprocess.Popen(
                         shlex.split(f"python3 log_listing.py {symbol+quote} {save_folder} {ENV_PATH}"),
-                        shell=True,
+                        # shell=True,
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE
