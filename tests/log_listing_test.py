@@ -9,12 +9,12 @@ client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 
 if __name__ == '__main__':
-    symbol = "btcusdt"
+    symbol = "nanousdt"
     save_path = "../trades"
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
     process = subprocess.Popen(
-        shlex.split(f"python ../luna_scripts/listing_scripts/log_listing.py {symbol} {save_path} {ENV_PATH} -d 3"),
+        shlex.split(f"python3 ../luna_scripts/listing_scripts/log_listing.py {symbol} {save_path} {ENV_PATH} -d 3"),
         shell=True,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
