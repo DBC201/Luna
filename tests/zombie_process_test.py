@@ -1,11 +1,13 @@
 import shlex, subprocess
-import time
+import os
 
 if __name__ == '__main__':
     processes = []
     listings = ["btcusdt", "ethusdt", "nanousdt"]
     env_path = "../.env.local"
-    dump_path = '.'
+    dump_path = '../trades'
+    if not os.path.isdir(dump_path):
+        os.mkdir(dump_path)
     ran = False
     while True:
         if not ran:
