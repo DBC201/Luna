@@ -25,8 +25,8 @@ most of the programs seem to work fine. If not one option could be [using deadsn
 - Pipenv file is only for windows only since it installs the twisted file manually. Hence pipenv install shouldn't be run.
 Instead just install the listed dependencies manually by doing
     -  ```sudo apt install python3-pip``` (check if pip is installed)
-    - ```pip install python-dotenv```
-    - ```pip install python-binance```
+    - ```pip3 install python-dotenv```
+    - ```pip3 install python-binance```
 
 
 ## Creators
