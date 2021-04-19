@@ -7,8 +7,7 @@ if __name__ == '__main__':
     env_path = "../.env.local"
     dump_path = '.'
     ran = False
-    start = time.time()
-    while time.time() - start <= 15:
+    while True:
         if not ran:
             for listing in listings:
                 p = subprocess.Popen(
