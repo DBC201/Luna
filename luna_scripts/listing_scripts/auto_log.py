@@ -2,7 +2,7 @@ import os
 import time
 import dateparser
 import calendar
-from BinanceAnnouncementScrape import BinanceAnnouncementScrape
+from luna_modules.binance.BinanceAnnouncementScrape import BinanceAnnouncementScrape
 import shlex, subprocess
 from binance.client import Client
 from dotenv import load_dotenv

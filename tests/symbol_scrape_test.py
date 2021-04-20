@@ -1,4 +1,4 @@
-from luna_scripts.listing_scripts.BinanceAnnouncementScrape import BinanceAnnouncementScrape
+from luna_modules.binance.BinanceAnnouncementScrape import BinanceAnnouncementScrape
 
 if __name__ == '__main__':
     scrape = BinanceAnnouncementScrape()

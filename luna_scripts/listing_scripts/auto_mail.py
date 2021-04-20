@@ -1,7 +1,7 @@
 import os
 import time
 import send_mail
-from BinanceAnnouncementScrape import BinanceAnnouncementScrape
+from luna_modules.binance.BinanceAnnouncementScrape import BinanceAnnouncementScrape
 
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
