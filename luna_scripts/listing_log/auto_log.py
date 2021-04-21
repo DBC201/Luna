@@ -19,7 +19,7 @@ if __name__ == '__main__':
     last_announcement = scraper.get_announcement()
     listing_time = None
     save_folder = os.path.join(ROOT, "trades")
-    symbols = None
+    symbols = {}
     active_processes = []
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
@@ -29,8 +29,9 @@ if __name__ == '__main__':
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            symbols = scraper.get_symbols()
-            if symbols:
+            temp_symbols = scraper.get_symbols()
+            if temp_symbols:
+                symbols.update(temp_symbols)
                 time_str = scraper.get_listing_date()
                 listing_time = calendar.timegm(dateparser.parse(time_str).timetuple())
         if listing_time is not None and time.time() + 60 >= listing_time:
@@ -45,7 +46,7 @@ if __name__ == '__main__':
                     )
                     active_processes.append(bot)
             listing_time = None
-            symbols = None
+            symbols.clear()
         last_announcement = current_announcement
         time.sleep(60)
         for p in active_processes:

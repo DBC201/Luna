@@ -8,5 +8,4 @@ if __name__ == '__main__':
     file_name = "MIRUSDT_2021-04-19_11.00.00.json"
     analyzer = TradeAnalyzer(os.path.join(trades_path, file_name))
     analyzer.draw(1000)
-    analyzer.show()
     analyzer.save_graph(os.path.join(trades_path, file_name.replace(".json", ".png")))
