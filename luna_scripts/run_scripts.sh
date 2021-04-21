@@ -1,5 +1,5 @@
 #!/bin/bash
-current_path=$(realpath "$0")
+current_path=$(dirname "realpath "$0"")
 output_path="$current_path/../../outputs"
 if [ ! -d output_path ]; then
 	mkdir $output_path
