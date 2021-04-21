@@ -39,25 +39,12 @@ TRIPLE_VAL = 0
 BOTTOM_VAL = sys.maxsize
 BALANCE = 0
 START_TIME = 0
-# in case symbol info not available early on
-# symbol_info = client.get_symbol_info(SYMBOL)
-# BASE_PRECISION = symbol_info["baseAssetPrecision"]
 BASE_PRECISION = 8
 
 
 def round_down(number, decimals):
     factor = 10 ** decimals
     return math.floor(number * factor) / factor
-
-
-'''
-SPENDING_AMOUNT = round_down(SPENDING_AMOUNT, symbol_info["quoteAssetPrecision"])
-min_amount = float(symbol_info["filters"][3]["minNotional"])
-min_amount += min_amount*0.1 + min_amount*0.05  # trading fee and min exit margin for getting out of stop loss
-# stop loss still might fail in case of drastic price drops if the value drops below min notional
-if SPENDING_AMOUNT <= min_amount:
-    raise RuntimeError("You must spend more than " + str(min_amount))
-'''
 
 
 def shutdown(code=0):
@@ -75,14 +62,14 @@ def trade_callback(data):
         try:
             if not IN:
                 IN_PRICE = current_price
-                client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
+                order = client.order_market_buy(symbol=SYMBOL, quoteOrderQty=SPENDING_AMOUNT)
                 IN = True
-                START_TIME = time.time()
+                START_TIME = float(order["transactTime"])/1000
                 DOUBLE_VAL = IN_PRICE * 2
                 TRIPLE_VAL = IN_PRICE * 3
                 BOTTOM_VAL = IN_PRICE * 0.87
-                BASE_PRECISION = client.get_symbol_info(SYMBOL)["baseAssetPrecision"]
-                BALANCE = round_down(float(client.get_asset_balance(asset=BUY_TYPE)["free"]), BASE_PRECISION)
+                BASE_PRECISION = len(order["executedQty"]) - order["executedQty"].find('.') - 1
+                BALANCE = round_down(float(order["executedQty"]), BASE_PRECISION)
             else:
                 if not DOUBLE_OUT and current_price >= DOUBLE_VAL:
                     to_sell = round_down(BALANCE*0.5, BASE_PRECISION)

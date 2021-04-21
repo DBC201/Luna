@@ -3,7 +3,6 @@ import time
 import dateparser
 import calendar
 import send_mail
-import scrape_functions
 import shlex, subprocess
 from binance.client import Client
 from dotenv import load_dotenv
