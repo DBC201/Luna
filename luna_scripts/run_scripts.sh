@@ -1,5 +1,6 @@
 #!/bin/bash
-output_path="$(pwd)/../../outputs"
+current_path=$(pwd)
+output_path="output_path/../../outputs"
 if [ ! -d output_path ]; then
 	mkdir $output_path
 fi
