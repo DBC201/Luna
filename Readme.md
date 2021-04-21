@@ -5,7 +5,7 @@ the modules should work with the right input format which have been documented i
 ## Dependencies
 - [python-binance](https://github.com/sammchardy/python-binance)
 - [python-dotenv](https://pypi.org/project/python-dotenv/)
-- [mathplotlib(for graphing trade data)](https://pypi.org/project/matplotlib/)
+- [mathplotlib](https://pypi.org/project/matplotlib/) (for graphing trade data)
 
 ## For Windows
 - Run 'pipenv install' in root folder. This should install the required dependencies.
