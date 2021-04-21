@@ -54,8 +54,8 @@ class BinanceAnnouncementScrape:
         else:
             return None
 
-    def refresh(self):
-        self.__last_title = self.__scrape_titles()[0]
+    def refresh(self, prev_index=0):
+        self.__last_title = self.__scrape_titles()[prev_index]
         self.__symbol_info = self.__get_symbol_info()
 
     def get_announcement(self):
