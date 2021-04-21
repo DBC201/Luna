@@ -5,6 +5,7 @@ the modules should work with the right input format which have been documented i
 ## Dependencies
 - [python-binance](https://github.com/sammchardy/python-binance)
 - [python-dotenv](https://pypi.org/project/python-dotenv/)
+- [mathplotlib(for graphing trade data)](https://pypi.org/project/matplotlib/)
 
 ## For Windows
 - Run 'pipenv install' in root folder. This should install the required dependencies.
@@ -27,7 +28,7 @@ Instead just install the listed dependencies manually by doing
     - ```sudo apt install python3-pip``` (check if pip is installed)
     - ```pip3 install python-dotenv```
     - ```pip3 install python-binance```
-
+    - ```pip3 install matplotlib```
 
 ## Creators
 - [Atilla Turkmen](https://github.com/atillaturkmen)

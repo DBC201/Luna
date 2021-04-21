@@ -1,3 +1,6 @@
+import os, sys
+ROOT = os.path.join(os.path.dirname(__file__), "..")
+sys.path.append(ROOT)
 from luna_modules.kline_patterns import kline_helpers
 
 
