@@ -19,7 +19,7 @@ if __name__ == '__main__':
     last_announcement = scraper.get_announcement()
 
     while True:
-        scraper.refresh()
+        scraper.refresh(1)
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
@@ -29,6 +29,9 @@ if __name__ == '__main__':
                 message = "Subject: " + f"{current_announcement} on {time_str}\n"
                 message += "\nhttps://www.binance.com/en/support/announcement/c-48"
                 for email in emails:
-                    send_mail.send(email, message)
+                    try:
+                        send_mail.send(email, message)
+                    except Exception as e:
+                        print(e)
         time.sleep(60)
         last_announcement = current_announcement
