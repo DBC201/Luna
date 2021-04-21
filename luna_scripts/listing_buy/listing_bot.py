@@ -69,7 +69,7 @@ def trade_callback(data):
                 TRIPLE_VAL = IN_PRICE * 3
                 BOTTOM_VAL = IN_PRICE * 0.87
                 BASE_PRECISION = len(order["executedQty"]) - order["executedQty"].find('.') - 1
-                BALANCE = round_down(float(order["executedQty"]), BASE_PRECISION)
+                BALANCE = round_down(float(order["executedQty"]), BASE_PRECISION)  # maybe remove round down for optimization?
             else:
                 if not DOUBLE_OUT and current_price >= DOUBLE_VAL:
                     to_sell = round_down(BALANCE*0.5, BASE_PRECISION)
