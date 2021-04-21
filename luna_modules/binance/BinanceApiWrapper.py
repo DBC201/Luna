@@ -1,6 +1,7 @@
 from binance.client import Client
 import math
 
+
 class BinanceApiWrapper:
     def __init__(self, key, secret, url=None):
         self.client = Client(key, secret)

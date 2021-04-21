@@ -1,4 +1,4 @@
-import os
+import os, sys
 import time
 import dateparser
 import calendar
@@ -7,7 +7,9 @@ import shlex, subprocess
 from binance.client import Client
 from dotenv import load_dotenv
 
-ENV_PATH = "../../.env.local"
+ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
+sys.path.append(ROOT)
+ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
 client = Client(os.environ["api_key"], os.environ["api_secret"])
 
@@ -15,7 +17,7 @@ if __name__ == '__main__':
     scraper = BinanceAnnouncementScrape()
     last_announcement = scraper.get_announcement()
     listing_time = None
-    save_folder = "../../trades"
+    save_folder = os.path.join(ROOT, "trades")
     symbols = None
     active_processes = []
     if not os.path.exists(save_folder):
