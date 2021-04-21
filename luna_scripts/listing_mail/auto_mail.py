@@ -19,7 +19,7 @@ if __name__ == '__main__':
     last_announcement = scraper.get_announcement()
 
     while True:
-        scraper.refresh(1)
+        scraper.refresh()
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
