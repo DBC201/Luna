@@ -7,6 +7,7 @@ class BinanceAnnouncementScrape:
     def __init__(self, link="https://www.binance.com/en/support/announcement/c-48"):
         self.link = link
         self.__last_title = self.__scrape_titles()[0]
+        self.__last_link = 'https://www.binance.com/en/support/announcement/' + self.__last_title["code"]
         self.__symbols_date = self.__get_symbols_date()
 
     def __scrape_titles(self):
@@ -18,7 +19,7 @@ class BinanceAnnouncementScrape:
         return j["routeProps"]['b723']["navDataResource"][0]['articles']
 
     def __get_symbols_date(self):
-        html = requests.get('https://www.binance.com/en/support/announcement/' + self.__last_title["code"]).content.decode()
+        html = requests.get(self.__last_link).content.decode()
         regex_str = r"open trading for (\w+\/\w+,?\s?)+(and\s\w+\/\w+\s)?trading pairs at \d+-\d+-\d+ \d+:\d+:?\d* \w\w \(.*?\)"
         search_result = re.search(regex_str, html)
         if search_result:
@@ -56,7 +57,11 @@ class BinanceAnnouncementScrape:
 
     def refresh(self, prev_index=0):
         self.__last_title = self.__scrape_titles()[prev_index]
+        self.__last_link = 'https://www.binance.com/en/support/announcement/' + self.__last_title["code"]
         self.__symbols_date = self.__get_symbols_date()
 
     def get_announcement(self):
         return self.__last_title["title"]
+
+    def get_announcement_link(self):
+        return self.__last_link

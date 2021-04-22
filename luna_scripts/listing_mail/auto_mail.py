@@ -22,7 +22,7 @@ if __name__ == '__main__':
             if coins:
                 time_str = scraper.get_listing_date()
                 message = "Subject: " + f"{current_announcement} on {time_str}\n"
-                message += "\nhttps://www.binance.com/en/support/announcement/c-48"
+                message += f"\n{scraper.get_announcement_link()}"
                 db = sqlite3.connect(DATABASE_PATH)
                 cursor = db.cursor()
                 cursor.execute('''SELECT email FROM emails WHERE valid = 1''')

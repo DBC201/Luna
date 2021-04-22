@@ -5,3 +5,4 @@ if __name__ == '__main__':
     print(scrape.get_announcement())
     print(scrape.get_listing_date())
     print(scrape.get_symbols())
+    print(scrape.get_announcement_link())
