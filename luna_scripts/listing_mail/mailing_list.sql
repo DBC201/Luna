@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS "emails" (
+	"email"	TEXT UNIQUE,
+	"valid"	INTEGER DEFAULT 1,
+	PRIMARY KEY("email")
+);

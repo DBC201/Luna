@@ -18,8 +18,7 @@ if __name__ == '__main__':
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            # coins = scraper.get_symbols()
-            coins = True
+            coins = scraper.get_symbols()
             if coins:
                 time_str = scraper.get_listing_date()
                 message = "Subject: " + f"{current_announcement} on {time_str}\n"
@@ -33,7 +32,7 @@ if __name__ == '__main__':
                     try:
                         send_mail.send(email, message)
                     except Exception as e:
-                        cursor.execute('''UPDATE emails SET valid = ? WHERE email = ?''', (0, email))
+                        cursor.execute('''UPDATE emails SET valid = ? WHERE email = ?''', [0, email])
                         db.commit()
                 cursor.close()
                 db.close()
