@@ -7,7 +7,7 @@ class BinanceAnnouncementScrape:
     def __init__(self, link="https://www.binance.com/en/support/announcement/c-48"):
         self.link = link
         self.__last_title = self.__scrape_titles()[0]
-        self.__symbol_info = self.__get_symbol_info()
+        self.__symbols_date = self.__get_symbols_date()
 
     def __scrape_titles(self):
         decoded_page = requests.get(self.link).content.decode()
@@ -17,7 +17,7 @@ class BinanceAnnouncementScrape:
         j = json.loads(raw_json)
         return j["routeProps"]['b723']["navDataResource"][0]['articles']
 
-    def __get_symbol_info(self):
+    def __get_symbols_date(self):
         html = requests.get('https://www.binance.com/en/support/announcement/' + self.__last_title["code"]).content.decode()
         regex_str = r"open trading for (\w+\/\w+,?\s?)+(and\s\w+\/\w+\s)?trading pairs at \d+-\d+-\d+ \d+:\d+:?\d* \w\w \(.*?\)"
         search_result = re.search(regex_str, html)
@@ -27,10 +27,10 @@ class BinanceAnnouncementScrape:
             return None
 
     def get_symbols(self):
-        if self.__symbol_info is None:
+        if self.__symbols_date is None:
             return None
         regex_str = r"(\w+\/\w+,?\s?)+(and\s\w+\/\w+\s)?"
-        search_result = re.search(regex_str, self.__symbol_info)
+        search_result = re.search(regex_str, self.__symbols_date)
         if not search_result:
             return None
         symbols = {}
@@ -45,10 +45,10 @@ class BinanceAnnouncementScrape:
         return symbols
 
     def get_listing_date(self):
-        if self.__symbol_info is None:
+        if self.__symbols_date is None:
             return None
         regex_str = r"\d+-\d+-\d+ \d+:\d+:?\d* \w\w \(.*?\)"
-        search_result = re.search(regex_str, self.__symbol_info)
+        search_result = re.search(regex_str, self.__symbols_date)
         if search_result:
             return search_result.group(0)
         else:
@@ -56,7 +56,7 @@ class BinanceAnnouncementScrape:
 
     def refresh(self, prev_index=0):
         self.__last_title = self.__scrape_titles()[prev_index]
-        self.__symbol_info = self.__get_symbol_info()
+        self.__symbols_date = self.__get_symbols_date()
 
     def get_announcement(self):
         return self.__last_title["title"]

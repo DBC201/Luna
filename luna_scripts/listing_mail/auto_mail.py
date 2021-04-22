@@ -5,7 +5,6 @@ sys.path.append(ROOT)
 from luna_scripts.listing_mail import send_mail
 from luna_modules.binance.BinanceAnnouncementScrape import BinanceAnnouncementScrape
 
-
 if __name__ == '__main__':
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     emails = []
