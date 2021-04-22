@@ -4,15 +4,11 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.append(ROOT)
 from luna_scripts.listing_mail import send_mail
 from luna_modules.binance.BinanceAnnouncementScrape import BinanceAnnouncementScrape
+import sqlite3
 
 if __name__ == '__main__':
-    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    emails = []
-    with open(os.path.join(THIS_FOLDER, "mailing_list.txt"), 'r') as file:
-        for email in file.readlines():
-            email = email.strip()
-            if email:
-                emails.append(email)
+    THIS_FOLDER = os.path.dirname(__file__)
+    DATABASE_PATH = os.path.join(THIS_FOLDER, "mailing_list.db")
     scraper = BinanceAnnouncementScrape()
 
     last_announcement = scraper.get_announcement()
@@ -22,15 +18,24 @@ if __name__ == '__main__':
         current_announcement = scraper.get_announcement()
         announcement_is_new = current_announcement != last_announcement
         if announcement_is_new:
-            coins = scraper.get_symbols()
+            # coins = scraper.get_symbols()
+            coins = True
             if coins:
                 time_str = scraper.get_listing_date()
                 message = "Subject: " + f"{current_announcement} on {time_str}\n"
                 message += "\nhttps://www.binance.com/en/support/announcement/c-48"
-                for email in emails:
+                db = sqlite3.connect(DATABASE_PATH)
+                cursor = db.cursor()
+                cursor.execute('''SELECT email FROM emails WHERE valid = 1''')
+                rows = cursor.fetchall()
+                for row in rows:
+                    email = row[0]
                     try:
                         send_mail.send(email, message)
                     except Exception as e:
-                        print(e)
+                        cursor.execute('''UPDATE emails SET valid = ? WHERE email = ?''', (0, email))
+                        db.commit()
+                cursor.close()
+                db.close()
         time.sleep(60)
         last_announcement = current_announcement

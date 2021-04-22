@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     db = sqlite3.connect("../luna_scripts/listing_mail/mailing_list.db")
     cursor = db.cursor()
-    cursor.execute('''SELECT * FROM emails WHERE valid == 1''')
+    cursor.execute('''SELECT * FROM emails WHERE valid = 1''')
     print(cursor.fetchall())
     cursor.close()
     db.close()
