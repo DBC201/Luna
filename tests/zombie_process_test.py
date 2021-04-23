@@ -23,5 +23,5 @@ if __name__ == '__main__':
             ran = True
         time.sleep(5)
         for p in processes:
-            if p.poll() is None:
-                del p
+            p.kill()
+            del p
