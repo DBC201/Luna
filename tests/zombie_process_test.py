@@ -14,7 +14,7 @@ if __name__ == '__main__':
         if not ran:
             for listing in listings:
                 p = subprocess.Popen(
-                    shlex.split(f"python3 ../luna_scripts/listing_scripts/log_listing.py {listing} {dump_path} {env_path} -d 3"),
+                    shlex.split(f"python3 ../luna_scripts/listing_log/log_listing.py {listing} {dump_path} {env_path} -d 3"),
                     stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE
