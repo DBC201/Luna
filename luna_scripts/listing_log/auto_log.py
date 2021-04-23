@@ -50,5 +50,5 @@ if __name__ == '__main__':
         last_announcement = current_announcement
         time.sleep(60)
         for p in active_processes:
-            p.kill()
-            del p
+            if p.poll() is None:
+                del p
