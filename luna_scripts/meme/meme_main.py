@@ -89,21 +89,21 @@ def send_to_all_email_addresses(subject, body, img):
 def send_bogdanoff(ticker):
     subject = "Dump EET --- " + ticker
     body = "https://www.binance.com/en/trade/" + ticker
-    img = "dump/" + random.choice(os.listdir("dump"))
+    img = "dump/" + random.choice(os.listdir("./dump"))
     send_to_all_email_addresses(subject, body, img)
 
 
 def send_jesse(ticker):
     subject = "Pump EET --- " + ticker
     body = "https://www.binance.com/en/trade/" + ticker
-    img = "pump/" + random.choice(os.listdir("pump"))
+    img = "pump/" + random.choice(os.listdir("./pump"))
     send_to_all_email_addresses(subject, body, img)
 
 
 def get_vitalik_on_the_line(ticker):
     subject = "Get Vitalik On The Line --- " + ticker
     body = "https://www.binance.com/en/trade/" + ticker
-    img = "vitalik/" + random.choice(os.listdir("vitalik"))
+    img = "vitalik/" + random.choice(os.listdir("./vitalik"))
     send_to_all_email_addresses(subject, body, img)
 
 
@@ -116,15 +116,16 @@ def return_parser():
 if __name__ == '__main__':
     args = return_parser().parse_args(sys.argv[1:])
     TICKER = args.ticker.upper()
-    initial_price = client.get_symbol_ticker(symbol=TICKER)["price"]
+    initial_price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
     i = 0
     while True:
-        price = client.get_symbol_ticker(symbol=TICKER)["price"]
-        if price * 0.9 < initial_price:
+        send_bogdanoff(TICKER)
+        price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
+        if price < initial_price * 0.9:
             send_bogdanoff(TICKER)
-        if price * 1.1 > initial_price:
+        if price > initial_price * 1.1:
             send_jesse(TICKER)
-        if price * 1.5 > initial_price:
+        if price > initial_price * 1.5:
             get_vitalik_on_the_line(TICKER)
         # update old price every hour
         if ++i % 60 == 0:
