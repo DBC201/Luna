@@ -89,21 +89,21 @@ def send_to_all_email_addresses(subject, body, img):
 def send_bogdanoff(ticker):
     subject = "Dump EET --- " + ticker
     body = "https://www.binance.com/en/trade/" + ticker
-    img = "dump/" + random.choice(os.listdir("./dump"))
+    img = "dump/" + random.choice(os.listdir(os.path.join(ROOT, "luna_scripts", "meme", "dump")))
     send_to_all_email_addresses(subject, body, img)
 
 
 def send_jesse(ticker):
     subject = "Pump EET --- " + ticker
     body = "https://www.binance.com/en/trade/" + ticker
-    img = "pump/" + random.choice(os.listdir("./pump"))
+    img = "pump/" + random.choice(os.listdir((os.path.join(ROOT, "luna_scripts", "meme", "pump"))))
     send_to_all_email_addresses(subject, body, img)
 
 
 def get_vitalik_on_the_line(ticker):
     subject = "Get Vitalik On The Line --- " + ticker
     body = "https://www.binance.com/en/trade/" + ticker
-    img = "vitalik/" + random.choice(os.listdir("./vitalik"))
+    img = "vitalik/" + random.choice(os.listdir((os.path.join(ROOT, "luna_scripts", "meme", "vitalik"))))
     send_to_all_email_addresses(subject, body, img)
 
 
