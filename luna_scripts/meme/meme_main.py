@@ -119,7 +119,6 @@ if __name__ == '__main__':
     initial_price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
     i = 0
     while True:
-        send_bogdanoff(TICKER)
         price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
         if price < initial_price * 0.9:
             send_bogdanoff(TICKER)
@@ -128,6 +127,7 @@ if __name__ == '__main__':
         if price > initial_price * 1.5:
             get_vitalik_on_the_line(TICKER)
         # update old price every hour
+        i += 1
         if ++i % 60 == 0:
             initial_price = price
         time.sleep(60)
