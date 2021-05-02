@@ -128,6 +128,6 @@ if __name__ == '__main__':
             get_vitalik_on_the_line(TICKER)
         # update old price every hour
         i += 1
-        if ++i % 60 == 0:
+        if i % 60 == 0:
             initial_price = price
         time.sleep(60)
