@@ -3,4 +3,4 @@
 __pycache__/
 outputs/
 trades/
-luna_scripts/listing_mail/mailing_list.db
+luna_modules/email/mailing_list.db
