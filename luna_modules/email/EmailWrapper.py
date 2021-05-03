@@ -93,8 +93,9 @@ class EmailWrapper:
                     self.send_email(email, msg.as_string())
                 else:
                     self.send_email(email, "Subject: " + subject + '\n\n' + body)
-            except Exception as e: # maybe seperate error check for giving wrong image path
+            except FileNotFoundError as e:
                 print(e)
+            except:
                 cursor.execute('''UPDATE emails SET valid = ? WHERE email = ?''', [0, email])
                 db.commit()
         cursor.close()
