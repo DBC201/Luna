@@ -60,13 +60,10 @@ if __name__ == '__main__':
         price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
         if price < initial_price * 0.9:
             send_bogdanoff(TICKER)
-            initial_price = price
+        if price > initial_price * 1.1:
+            send_jesse(TICKER)
         if price > initial_price * 1.5:
             get_vitalik_on_the_line(TICKER)
-            initial_price = price
-        elif price > initial_price * 1.1:
-            send_jesse(TICKER)
-            initial_price = price
         # update old price every hour
         i += 1
         if i % 60 == 0:
