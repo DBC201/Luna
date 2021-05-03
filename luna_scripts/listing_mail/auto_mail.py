@@ -29,7 +29,7 @@ if __name__ == '__main__':
             if coins:
                 time_str = scraper.get_listing_date()
                 emailWrapper.database_send(
-                    subject="Subject: " + f"{current_announcement} on {time_str}",
+                    subject= f"{current_announcement} on {time_str}",
                     body=scraper.get_announcement_link()
                 )
         time.sleep(60)
