@@ -92,7 +92,7 @@ class EmailWrapper:
                     msg = self.email_with_picture(subject, email, body, img)
                     self.send_email(email, msg.as_string())
                 else:
-                    self.send_email(email, subject + '\n\n' + body)
+                    self.send_email(email, "Subject: " + subject + '\n\n' + body)
             except Exception as e: # maybe seperate error check for giving wrong image path
                 print(e)
                 cursor.execute('''UPDATE emails SET valid = ? WHERE email = ?''', [0, email])
