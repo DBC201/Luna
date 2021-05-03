@@ -56,16 +56,25 @@ if __name__ == '__main__':
     TICKER = args.ticker.upper()
     initial_price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
     i = 0
+    dumped = False
+    pumped = False
+    called_vitalik = False
     while True:
         price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
-        if price < initial_price * 0.9:
+        if (price < initial_price * 0.9) and not dumped:
             send_bogdanoff(TICKER)
-        if price > initial_price * 1.1:
+            dumped = True
+        if (price > initial_price * 1.1) and not pumped:
             send_jesse(TICKER)
-        if price > initial_price * 1.5:
+            pumped = True
+        if (price > initial_price * 1.5) and not called_vitalik:
             get_vitalik_on_the_line(TICKER)
+            called_vitalik = True
         # update old price every hour
         i += 1
         if i % 60 == 0:
             initial_price = price
+            dumped = False
+            pumped = False
+            called_vitalik = False
         time.sleep(60)
