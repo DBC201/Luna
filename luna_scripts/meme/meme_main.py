@@ -10,7 +10,6 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.append(ROOT)
 from luna_modules.email.EmailWrapper import EmailWrapper
 
-DATABASE_PATH = os.path.join(ROOT, "luna_scripts", "listing_mail", "mailing_list.db")
 ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
 client = Client(os.environ["api_key"], os.environ["api_secret"])
