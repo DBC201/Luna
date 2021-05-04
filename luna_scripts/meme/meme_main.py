@@ -97,24 +97,25 @@ if __name__ == '__main__':
     minutes = 0
     while True:
         # Update current prices of all tickers
-        currentPrices = apiWrapper.get_price_dict()
-        for p in tickers:
-            p.currentPrice = currentPrices[p]
+        current_prices = apiWrapper.get_price_dict()
+        for name in tickers:
+            tickers[name].current_price = current_prices[name]
         # Check prices for all tickers
-        for p in tickers:
-            if (p.currentPrice < p.initial_price * 0.9) and not p.dumped:
-                send_bogdanoff(p)
-                p.dumped = True
-            if (p.currentPrice > p.initial_price * 1.1) and not p.pumped:
-                send_jesse(p)
-                p.pumped = True
-            if (p.currentPrice > p.initial_price * 1.5) and not p.called_vitalik:
-                get_vitalik_on_the_line(p)
-                p.called_vitalik = True
+        for name in tickers:
+            t = tickers[name]
+            if (t.current_price < t.initial_price * 0.9) and not t.dumped:
+                send_bogdanoff(t.identifier)
+                t.dumped = True
+            if (t.current_price > t.initial_price * 1.1) and not t.pumped:
+                send_jesse(t.identifier)
+                t.pumped = True
+            if (t.current_price > t.initial_price * 1.5) and not t.called_vitalik:
+                get_vitalik_on_the_line(t.identifier)
+                t.called_vitalik = True
         # update old price every hour
         minutes += 1
         if minutes % 60 == 0:
-            initial_prices = currentPrices
-            for p in tickers:
-                p.reset()
+            initial_prices = current_prices
+            for name in tickers:
+                tickers[name].reset()
         time.sleep(60)
