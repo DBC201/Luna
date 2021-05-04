@@ -1,18 +1,17 @@
-import argparse
 import os
 import random
 import sys
 import time
-from binance.client import Client
 from dotenv import load_dotenv
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.append(ROOT)
 from luna_modules.email.EmailWrapper import EmailWrapper
+from luna_modules.binance.BinanceApiWrapper import BinanceApiWrapper
 
 ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
-client = Client(os.environ["api_key"], os.environ["api_secret"])
+apiWrapper = BinanceApiWrapper(os.environ["api_key"], os.environ["api_secret"])
 
 
 emailWrapper = EmailWrapper(
@@ -64,17 +63,8 @@ def get_vitalik_on_the_line(ticker):
     emailWrapper.database_send(subject, body, img)
 
 
-def return_parser():
-    parser = argparse.ArgumentParser(description="Send pump dump memes via email")
-    parser.add_argument("ticker", type=str, help="Ticker to watch")
-    return parser
-
-
 if __name__ == '__main__':
-    #args = return_parser().parse_args(sys.argv[1:])
-    #TICKER = args.ticker.upper()
-    TICKER="NANOUSDT"
-    initial_price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
+    initial_prices = apiWrapper.get_price_dict()
     i = 0
     dumped = False
     pumped = False
