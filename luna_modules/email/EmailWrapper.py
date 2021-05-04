@@ -50,12 +50,12 @@ class EmailWrapper:
         # use your computer's name
 
         # set an alternative html body
-        msg.add_alternative("""\
+        msg.add_alternative("""
             <html>
                 <body>
                     <p>"""
                             + body +
-                            """"</p>
+                            """</p>
                     <img src="cid:{image_cid}">
                 </body>
             </html>

@@ -13,4 +13,4 @@ if __name__ == '__main__':
         password=os.environ["email_password"]
     )
     emailWrapper.database_send("test1", "test")
-    emailWrapper.database_send("test2", "test", "testImage")
+    #emailWrapper.database_send("test2", "test", "testImage")
