@@ -13,12 +13,11 @@ ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
 apiWrapper = BinanceApiWrapper(os.environ["api_key"], os.environ["api_secret"])
 
-
 emailWrapper = EmailWrapper(
-        port=os.environ["ssl_port"],
-        smtp_server=os.environ["smtp_server"],
-        sender_email=os.environ["email"],
-        password=os.environ["email_password"]
+    port=os.environ["ssl_port"],
+    smtp_server=os.environ["smtp_server"],
+    sender_email=os.environ["email"],
+    password=os.environ["email_password"]
 )
 
 
@@ -53,6 +52,7 @@ def send_jesse(ticker):
 def get_vitalik_on_the_line(ticker):
     """
     Put Vitalik on zhe line
+
     :param ticker: ticker that will be sent in mail
     :type ticker: string
     :return: None
@@ -64,41 +64,57 @@ def get_vitalik_on_the_line(ticker):
 
 
 class Ticker:
-    def __init__(self, identifier, price):
+    """
+    Contains data about ticker name, price at last hour and current price
+
+    Ex: "BTCUSDT" 65000 66000
+    """
+
+    def __init__(self, identifier, initial_price, current_price):
         self.identifier = identifier
-        self.price = price
+        self.initial_price = initial_price
+        self.current_price = current_price
         self.reset()
 
     def reset(self):
+        """
+        Set all mail flags to false
+
+        :return: None
+        """
         self.dumped = False
         self.pumped = False
         self.called_vitalik = False
 
 
 if __name__ == '__main__':
+    # Get prices for all tickers and initialize them
     initial_prices = apiWrapper.get_price_dict()
     tickers = dict()
-    # TODO
     for p in initial_prices:
-        ticker = Ticker(p, initial_prices[p])
-        tickers[p] = ticker
+        tickers[p] = Ticker(p, initial_prices[p], initial_prices[p])
+    # Check every minute for price fluctuations
     minutes = 0
     while True:
-        price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
-        if (price < initial_price * 0.9) and not dumped:
-            send_bogdanoff(TICKER)
-            dumped = True
-        if (price > initial_price * 1.1) and not pumped:
-            send_jesse(TICKER)
-            pumped = True
-        if (price > initial_price * 1.5) and not called_vitalik:
-            get_vitalik_on_the_line(TICKER)
-            called_vitalik = True
+        # Update current prices of all tickers
+        currentPrices = apiWrapper.get_price_dict()
+        for p in tickers:
+            p.currentPrice = currentPrices[p]
+        # Check prices for all tickers
+        for p in tickers:
+            if (p.currentPrice < p.initial_price * 0.9) and not p.dumped:
+                send_bogdanoff(p)
+                p.dumped = True
+            if (p.currentPrice > p.initial_price * 1.1) and not p.pumped:
+                send_jesse(p)
+                p.pumped = True
+            if (p.currentPrice > p.initial_price * 1.5) and not p.called_vitalik:
+                get_vitalik_on_the_line(p)
+                p.called_vitalik = True
         # update old price every hour
         minutes += 1
         if minutes % 60 == 0:
-            initial_price = price
-            dumped = False
-            pumped = False
-            called_vitalik = False
+            initial_prices = currentPrices
+            for p in tickers:
+                p.reset()
         time.sleep(60)
