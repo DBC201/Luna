@@ -28,6 +28,7 @@ def send_bogdanoff(ticker):
     Whales are out, inform everyone in mail list
 
     :param ticker: ticker that will be sent in mail
+    :type ticker: string
     :return: None
     """
     subject = "Dump EET --- " + ticker
@@ -41,6 +42,7 @@ def send_jesse(ticker):
     Whales are in, inform everyone in mail list
 
     :param ticker: ticker that will be sent in mail
+    :type ticker: string
     :return: None
     """
     subject = "Pump EET --- " + ticker
@@ -52,8 +54,8 @@ def send_jesse(ticker):
 def get_vitalik_on_the_line(ticker):
     """
     Put Vitalik on zhe line
-
     :param ticker: ticker that will be sent in mail
+    :type ticker: string
     :return: None
     """
     subject = "Get Vitalik On The Line --- " + ticker
