@@ -88,5 +88,5 @@ class BinanceApiWrapper:
         raw = self.client.get_symbol_ticker()
         prices = dict()
         for r in raw:
-            prices.update(r)
+            prices[r["symbol"]] = float(r["price"])
         return prices

@@ -63,12 +63,26 @@ def get_vitalik_on_the_line(ticker):
     emailWrapper.database_send(subject, body, img)
 
 
+class Ticker:
+    def __init__(self, identifier, price):
+        self.identifier = identifier
+        self.price = price
+        self.reset()
+
+    def reset(self):
+        self.dumped = False
+        self.pumped = False
+        self.called_vitalik = False
+
+
 if __name__ == '__main__':
     initial_prices = apiWrapper.get_price_dict()
-    i = 0
-    dumped = False
-    pumped = False
-    called_vitalik = False
+    tickers = dict()
+    # TODO
+    for p in initial_prices:
+        ticker = Ticker(p, initial_prices[p])
+        tickers[p] = ticker
+    minutes = 0
     while True:
         price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
         if (price < initial_price * 0.9) and not dumped:
@@ -81,8 +95,8 @@ if __name__ == '__main__':
             get_vitalik_on_the_line(TICKER)
             called_vitalik = True
         # update old price every hour
-        i += 1
-        if i % 60 == 0:
+        minutes += 1
+        if minutes % 60 == 0:
             initial_price = price
             dumped = False
             pumped = False
