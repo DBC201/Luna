@@ -71,8 +71,9 @@ def return_parser():
 
 
 if __name__ == '__main__':
-    args = return_parser().parse_args(sys.argv[1:])
-    TICKER = args.ticker.upper()
+    #args = return_parser().parse_args(sys.argv[1:])
+    #TICKER = args.ticker.upper()
+    TICKER="NANOUSDT"
     initial_price = float(client.get_symbol_ticker(symbol=TICKER)["price"])
     i = 0
     dumped = False
