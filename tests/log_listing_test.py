@@ -1,20 +1,14 @@
 import os
 import shlex, subprocess
-from binance.client import Client
-from dotenv import load_dotenv
-
-ENV_PATH = "../.env.local"
-load_dotenv(dotenv_path=ENV_PATH)
-client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 
 if __name__ == '__main__':
-    symbol = "forthusdt"
+    symbol = "ethusdt"
     save_path = "../trades"
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
     process = subprocess.Popen(
-        shlex.split(f"python ../luna_scripts/listing_log/log_listing.py {symbol} {save_path} {ENV_PATH} -d 3"),
+        shlex.split(f"python ../luna_scripts/listing_log/log_listing.py {symbol} {save_path} -d 3"),
         shell=True,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,

@@ -12,8 +12,11 @@ class BinanceApiWrapper:
     :param url: change this if you want to use the test api
     :type url: string
     """
-    def __init__(self, key, secret, url=None):
-        self.client = Client(key, secret)
+    def __init__(self, key=None, secret=None, url=None):
+        if key and secret:
+            self.client = Client(key, secret)
+        else:
+            self.client = Client()
         if url:
             self.client.API_URL = url
 

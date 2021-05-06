@@ -1,6 +1,5 @@
 import sys, argparse
 import os
-from dotenv import load_dotenv
 from binance.client import Client
 from binance.websockets import BinanceSocketManager
 import time, datetime
@@ -12,16 +11,13 @@ def return_parser():
     parser = argparse.ArgumentParser(description="Log minute trades")
     parser.add_argument("symbol", type=str, help="trades to log (ex:BTCUSDT)")
     parser.add_argument("dump_path", type=str, help="directory to dump trades")
-    parser.add_argument("env_path", type=str, help="file path for env variables")
     parser.add_argument("-d", "--duration", type=int, dest="duration", help="time in seconds")
     return parser
 
 
 args = return_parser().parse_args(sys.argv[1:])
 SYMBOL = args.symbol.upper()
-env_path = args.env_path
-load_dotenv(dotenv_path=env_path)
-client = Client(os.environ["api_key"], os.environ["api_secret"])
+client = Client()
 DURATION = 60 # in seconds
 if args.duration:
     DURATION = args.duration
