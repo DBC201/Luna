@@ -5,7 +5,7 @@ from luna_modules.trade_analysis.TradeAnalyzer import TradeAnalyzer
 
 if __name__ == '__main__':
     trades_path = os.path.join(ROOT, "trades")
-    file_name = "MIRUSDT_2021-04-19_11.00.00.json"
+    file_name = "BTCUSDT_2021-05-06_16.35.26.json"
     analyzer = TradeAnalyzer(os.path.join(trades_path, file_name))
     analyzer.draw(1000)
     analyzer.save_graph(os.path.join(trades_path, file_name.replace(".json", ".png")))
