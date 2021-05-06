@@ -6,6 +6,15 @@ fib_ratios = [0.236, 0.382, 0.5, 0.618, 0.702, 0.786, 1]
 
 
 def fib_breaking_points(min_val, max_val):
+    """Get fib levels
+
+    :param min_val: value to start
+    :type min_val: float
+    :param max_val: value to finish
+    :type max_val: float
+    :return: breaking_points
+    :rtype: list
+    """
     margin = max_val - min_val
     breaking_points = []
     for ratio in fib_ratios:
