@@ -10,6 +10,21 @@ current_dir = os.path.dirname(__file__)
 
 
 class EmailWrapper:
+    """Email wrapper for sending emails from database
+
+    See mailing_list.sql for the database schema
+
+    :param port: email port
+    :type port: int
+    :param smtp_server: smtp link
+    :type smtp_server: string
+    :param sender_email: sender's email address
+    :type sender_mail: string
+    :param password: password of the email address
+    :type passwrod: string
+    :param database_dir: directory of the database
+    :type database_dir: string
+    """
     def __init__(self, port, smtp_server, sender_email, password,
                  database_dir=os.path.join(current_dir, "mailing_list.db")):
         self.__port = port
@@ -19,12 +34,26 @@ class EmailWrapper:
         self.__database_dir = database_dir
 
     def send_email(self, receiver_email, content):
+        """Send an email to given address
+
+        :param receiver_email: address to send to
+        :type receiver_email: string
+        :param content: raw content of the email
+        :type content: string
+        :return:
+        """
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL(self.__smtp_server, self.__port, context=context) as server:
             server.login(self.__sender_email, self.__password)
             server.sendmail(self.__sender_email, receiver_email, content)
 
     def clean_database(self):
+        """Cleans the invalid email addresses from database
+
+        An address is set to invalid if an error is raised while trying to send
+
+        :return:
+        """
         db = sqlite3.connect(self.__database_dir)
         cursor = db.cursor()
         cursor.execute('''DELETE FROM emails WHERE valid = ?''', [0])
@@ -34,6 +63,21 @@ class EmailWrapper:
 
     # https://stackoverflow.com/questions/920910/sending-multipart-html-emails-which-contain-embedded-images
     def email_with_picture(self, subject, to, body, image_path):
+        """Send multimedia emails
+
+        https://stackoverflow.com/questions/920910/sending-multipart-html-emails-which-contain-embedded-images
+
+        :param subject: subject
+        :type subject: string
+        :param to: address to send
+        :type to: string
+        :param body: body content
+        :type body: string
+        :param image_path: path of the image to be sent
+        :type image_path: string
+        :return: message object
+        :rtype: EmailMessage
+        """
         msg = EmailMessage()
 
         # generic email headers
@@ -81,6 +125,16 @@ class EmailWrapper:
         return msg
 
     def database_send(self, subject, body, img=None):
+        """Send out emails to every address in database
+
+        :param subject: subject of email
+        :type subject: string
+        :param body: text content for email
+        :type body: string
+        :param img: path of image to be added
+        :type img: string
+        :return:
+        """
         db = sqlite3.connect(self.__database_dir)
         cursor = db.cursor()
         cursor.execute('''SELECT email FROM emails WHERE valid = 1''')
