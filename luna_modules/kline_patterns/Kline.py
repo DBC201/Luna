@@ -44,4 +44,4 @@ class Kline:
         return self.data[3] + self.total_length() / 2  # low + total_length
 
     def is_red(self):
-        return self.data[1] > self.data[4]  # open < close
+        return self.data[1] > self.data[4]  # open > close
