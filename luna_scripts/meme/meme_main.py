@@ -11,10 +11,10 @@ from luna_modules.binance.BinanceApiWrapper import BinanceApiWrapper
 
 ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
-apiWrapper = BinanceApiWrapper(os.environ["api_key"], os.environ["api_secret"])
+apiWrapper = BinanceApiWrapper()
 
 emailWrapper = EmailWrapper(
-    port=os.environ["ssl_port"],
+    port=int(os.environ["ssl_port"]),
     smtp_server=os.environ["smtp_server"],
     sender_email=os.environ["email"],
     password=os.environ["email_password"]
@@ -96,7 +96,7 @@ if __name__ == '__main__':
     initial_prices = apiWrapper.get_price_dict()
     tickers = dict()
     for p in initial_prices:
-        tickers[p] = Ticker(p, initial_prices[p], initial_prices[p])
+        tickers[p] = Ticker(p, initial_prices[p])
     # Check every minute for price fluctuations
     minutes = 0
     while True:
