@@ -15,12 +15,12 @@ class KlinePatterns:
     def is_hammer(self):
         head_bottom = self.klines[-1].head_bottom()
         midpoint = self.klines[-1].midpoint()
-        return self.klines[-3].is_red() and head_bottom > midpoint
+        return self.klines[-2].is_red() and head_bottom > midpoint
 
     def is_hanging_man(self):
         head_bottom = self.klines[-1].head_bottom()
         midpoint = self.klines[-1].midpoint()
-        return (not self.klines[-3].is_red()) and head_bottom > midpoint
+        return (not self.klines[-2].is_red()) and head_bottom > midpoint
 
     def is_morning_star(self):
         first_length = self.klines[-3].head_length()
