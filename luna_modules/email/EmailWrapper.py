@@ -21,7 +21,7 @@ class EmailWrapper:
     :param sender_email: sender's email address
     :type sender_mail: string
     :param password: password of the email address
-    :type passwrod: string
+    :type password: string
     :param database_dir: directory of the database
     :type database_dir: string
     """

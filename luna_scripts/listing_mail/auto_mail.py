@@ -8,11 +8,9 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(ROOT, ".env.local"))
 
 if __name__ == '__main__':
-    THIS_FOLDER = os.path.dirname(__file__)
-    DATABASE_PATH = os.path.join(THIS_FOLDER, "../../luna_modules/email/mailing_list.db")
     scraper = BinanceAnnouncementScrape()
     emailWrapper = EmailWrapper(
-        port=os.environ["ssl_port"],
+        port=int(os.environ["ssl_port"]),
         smtp_server=os.environ["smtp_server"],
         sender_email=os.environ["email"],
         password=os.environ["email_password"]
