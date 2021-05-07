@@ -1,18 +1,12 @@
 import os, sys
+import shlex, subprocess
 import time
 import dateparser
 import calendar
+
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.append(ROOT)
 from luna_modules.binance.BinanceAnnouncementScrape import BinanceAnnouncementScrape
-import shlex, subprocess
-from binance.client import Client
-from dotenv import load_dotenv
-
-
-ENV_PATH = os.path.join(ROOT, ".env.local")
-load_dotenv(dotenv_path=ENV_PATH)
-client = Client(os.environ["api_key"], os.environ["api_secret"])
 
 if __name__ == '__main__':
     scraper = BinanceAnnouncementScrape()
@@ -38,7 +32,7 @@ if __name__ == '__main__':
             for symbol in symbols:
                 for quote in symbols[symbol]:
                     bot = subprocess.Popen(
-                        shlex.split(f"python3 log_listing.py {symbol+quote} {save_folder} {ENV_PATH}"),
+                        shlex.split(f"python3 log_listing.py {symbol + quote} {save_folder}"),
                         shell=True,
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
