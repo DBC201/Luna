@@ -38,7 +38,15 @@ if __name__ == '__main__':
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE
                     )
+                    gate = subprocess.Popen(
+                        shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder}"),
+                        shell=True,
+                        stdin=subprocess.PIPE,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE
+                    )
                     active_processes.append(bot)
+                    active_processes.append(gate)
             listing_time = None
             symbols.clear()
         last_announcement = current_announcement
