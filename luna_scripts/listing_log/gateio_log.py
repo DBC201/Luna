@@ -7,11 +7,11 @@ import time
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.append(ROOT)
-from luna_modules.gate_io.GateioSocket import GateWebSocketApp
+from luna_modules.gate_io.GateWebSocketApp import GateWebSocketApp
 
 
 def return_parser():
-    parser = argparse.ArgumentParser(description="Log minute trades")
+    parser = argparse.ArgumentParser(description="Log minute trades in gate.io")
     parser.add_argument("symbol", type=str, help="trades to log (ex:BTC_USDT)")
     parser.add_argument("dump_path", type=str, help="directory to dump trades")
     parser.add_argument("-d", "--duration", type=int, dest="duration", help="time in seconds")
@@ -28,12 +28,10 @@ START = time.time()
 
 
 def shutdown():
-    print("shutdown")
     time_str = datetime.utcfromtimestamp(START).strftime('%Y-%m-%d_%H.%M.%S')
     path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + '_gate' + ".json")
     with open(path, 'w') as file:
         json.dump(TRADES, file)
-    print("bitti")
     sys.exit()
 
 
@@ -42,12 +40,10 @@ def on_message(ws, message):
     # handle whatever message you received
     global START
     message = json.loads(message)
-    print(message)
-    print(time.time())
     if message["event"] == "subscribe":
         START = time.time()
     if message["event"] == "update":
-        TRADES.append(datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f') + " " + message["result"]["price"])
+        TRADES.append(message)
         if time.time() - START >= DURATION:
             shutdown()
 

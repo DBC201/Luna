@@ -6,7 +6,6 @@ import hmac
 import json
 import time
 
-# pip install -U websocket_client
 from websocket import WebSocketApp
 
 
@@ -27,7 +26,7 @@ class GateWebSocketApp(WebSocketApp):
         self._api_key = api_key
         self._api_secret = api_secret
 
-    def _send_ping(self, interval, event):
+    def _send_ping(self, interval, event, payload):
         while not event.wait(interval):
             self.last_ping_tm = time.time()
             if self.sock:

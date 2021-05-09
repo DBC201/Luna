@@ -39,7 +39,7 @@ if __name__ == '__main__':
                         stderr=subprocess.PIPE
                     )
                     gate = subprocess.Popen(
-                        shlex.split(f"python3 ../gate_io/log_from_socket.py {symbol + '_' + quote} {save_folder}"),
+                        shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder}"),
                         shell=True,
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,

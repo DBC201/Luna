@@ -6,10 +6,10 @@ name = "pypi"
 [packages]
 setuptools = "*"
 twisted = {path = "./Twisted-20.3.0-cp39-cp39-win_amd64.whl"}
-python-binance = "*"
+python-binance = "==0.7.10"
 python-dotenv = "*"
 matplotlib = "*"
-websocket = "*"
+websocket-client = "*"
 
 [dev-packages]
 

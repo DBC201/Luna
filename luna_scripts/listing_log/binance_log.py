@@ -8,7 +8,7 @@ from twisted.internet import reactor
 
 
 def return_parser():
-    parser = argparse.ArgumentParser(description="Log minute trades")
+    parser = argparse.ArgumentParser(description="Log minute trades in binance")
     parser.add_argument("symbol", type=str, help="trades to log (ex:BTCUSDT)")
     parser.add_argument("dump_path", type=str, help="directory to dump trades")
     parser.add_argument("-d", "--duration", type=int, dest="duration", help="time in seconds")
