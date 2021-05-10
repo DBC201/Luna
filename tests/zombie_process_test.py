@@ -22,13 +22,15 @@ if __name__ == '__main__':
                 processes.append([listing, p])
             ran = True
         time.sleep(5)
+        print(processes)
         for i in processes:
             name, p = i
-            if p.poll() is None:
-                stdout, stderr = p.communicate()
-                if stdout:
-                    print(name, "stdout:", stdout)
+            stdout, stderr = p.communicate()
+            if stdout:
+                print(name, "stdout:", stdout)
 
-                if stderr:
-                    print(name, "stderr:", stderr)
-                del i
+            if stderr:
+                print(name, "stderr:", stderr)
+            p.kill()
+        p = None
+        processes.clear()
