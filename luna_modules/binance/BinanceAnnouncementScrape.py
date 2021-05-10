@@ -50,7 +50,7 @@ class BinanceAnnouncementScrape:
 
         Scrapes the sentence that has the date and the pairs
 
-        Example symbol: BTC: [USDT, BUSD]
+        Example symbol: {"BTC": ["USDT", "BUSD"]}
 
         :return: symbols
         :rtype: dict
