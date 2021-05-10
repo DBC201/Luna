@@ -17,11 +17,19 @@ if __name__ == '__main__':
                     shlex.split(f"python3 ../luna_scripts/listing_log/log_listing.py {listing} {dump_path} {env_path} -d 3"),
                     stdin=subprocess.PIPE,
                     stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
+                    stderr=subprocess.PIPE,
+                    text=True
                 )
-                processes.append(p)
+                processes.append([listing, p])
             ran = True
         time.sleep(5)
-        for p in processes:
+        for i in processes:
+            name, p = i
             if p.poll() is None:
-                del p
+                stdout, stderr = p.communicate()
+                if stdout:
+                    print(name, "stdout:", stdout)
+
+                if stderr:
+                    print(name, "stderr:", stderr)
+                del i

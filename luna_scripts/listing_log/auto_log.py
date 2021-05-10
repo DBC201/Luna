@@ -47,8 +47,8 @@ if __name__ == '__main__':
                         stderr=subprocess.PIPE,
                         text=True
                     )
-                    active_processes.append({symbol+quote: bot})
-                    active_processes.append({symbol+'_'+quote: gate})
+                    active_processes.append([symbol+quote, bot])
+                    active_processes.append([symbol+'_'+quote, gate])
             listing_time = None
             symbols.clear()
         last_announcement = current_announcement
