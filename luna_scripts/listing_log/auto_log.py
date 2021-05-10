@@ -36,21 +36,30 @@ if __name__ == '__main__':
                         shell=True,
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE
+                        stderr=subprocess.PIPE,
+                        text=True
                     )
                     gate = subprocess.Popen(
                         shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder}"),
                         shell=True,
                         stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE
+                        stderr=subprocess.PIPE,
+                        text=True
                     )
-                    active_processes.append(bot)
-                    active_processes.append(gate)
+                    active_processes.append({symbol+quote: bot})
+                    active_processes.append({symbol+'_'+quote: gate})
             listing_time = None
             symbols.clear()
         last_announcement = current_announcement
         time.sleep(60)
-        for p in active_processes:
+        for i in active_processes:
+            name, p = i
             if p.poll() is None:
-                del p
+                stdout, stderr = p.communicate()
+                if stdout:
+                    print(name, "stdout:", stdout)
+
+                if stderr:
+                    print(name, "stderr:", stderr)
+                del i
