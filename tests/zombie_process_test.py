@@ -12,11 +12,18 @@ if __name__ == '__main__':
     while True:
         if not ran:
             for listing in listings:
-                subprocess.Popen(
-                    shlex.split(
-                        f"python3 ../luna_scripts/listing_log/binance_log.py {listing} "
-                        f"{dump_path} -d 3 > ../outputs/{listing}.txt"
-                    )
+                bot = subprocess.Popen(
+                    shlex.split(f"python3 log_listing.py {listing} {dump_path}"),
+                    shell=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
                 )
+                processes.append(bot)
             ran = True
         time.sleep(5)
+        for p in processes:
+            stdout, stderr = p.communicate()
+            p.kill()
+            del p
+        processes.clear()
