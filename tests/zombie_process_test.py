@@ -13,7 +13,7 @@ if __name__ == '__main__':
         if not ran:
             for listing in listings:
                 bot = subprocess.Popen(
-                    shlex.split(f"python3 log_listing.py {listing} {dump_path}"),
+                    shlex.split(f"python ../luna_scripts/listing_log/binance_log.py {listing} {dump_path} -d 3"),
                     shell=True,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
@@ -26,7 +26,6 @@ if __name__ == '__main__':
         for p in processes:
             stdout, stderr = p.communicate()
             print(stdout, stderr)
-            p.kill()
             del p
         processes.clear()
 

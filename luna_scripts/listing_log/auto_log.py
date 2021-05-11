@@ -38,7 +38,7 @@ if __name__ == '__main__':
                         stderr=subprocess.PIPE
                     )
                     gate = subprocess.Popen(
-                        shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder}"),
+                        shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder} -d 60"),
                         shell=True,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE
@@ -50,5 +50,10 @@ if __name__ == '__main__':
         last_announcement = current_announcement
         time.sleep(60)
         for p in active_processes:
-            if p.poll() is None:
-                del p
+            stdout, stderr = p.communicate()
+            if stdout:
+                print(stdout)
+            if stderr:
+                print(stderr)
+            del p
+        active_processes.clear()
