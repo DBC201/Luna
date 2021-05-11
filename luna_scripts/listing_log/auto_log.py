@@ -39,21 +39,13 @@ if __name__ == '__main__':
                     subprocess.Popen(
                         shlex.split(f"python3 log_listing.py {symbol + quote} {save_folder} > "
                                     f"{process_output}"),
-                        shell=True,
-                        stdin=subprocess.PIPE,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        text=True
+                        shell=True
                     )
                     process_output = os.path.join(process_output_folder, symbol+quote+"_gateio_log.txt")
                     subprocess.Popen(
                         shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder} > "
                                     f"{process_output}"),
-                        shell=True,
-                        stdin=subprocess.PIPE,
-                        stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE,
-                        text=True
+                        shell=True
                     )
             listing_time = None
             symbols.clear()
