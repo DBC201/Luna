@@ -34,14 +34,12 @@ if __name__ == '__main__':
                     bot = subprocess.Popen(
                         shlex.split(f"python3 log_listing.py {symbol + quote} {save_folder}"),
                         shell=True,
-                        stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE
                     )
                     gate = subprocess.Popen(
                         shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder}"),
                         shell=True,
-                        stdin=subprocess.PIPE,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE
                     )
