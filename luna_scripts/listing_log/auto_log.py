@@ -38,13 +38,15 @@ if __name__ == '__main__':
                         shlex.split(f"python3 log_listing.py {symbol + quote} {save_folder}"),
                         shell=True,
                         stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE
+                        stderr=subprocess.PIPE,
+                        text=True
                     )
                     gate = subprocess.Popen(
                         shlex.split(f"python3 gateio_log.py {symbol + '_' + quote} {save_folder} -d 60"),
                         shell=True,
                         stdout=subprocess.PIPE,
-                        stderr=subprocess.PIPE
+                        stderr=subprocess.PIPE,
+                        text=True
                     )
                     active_processes.append(bot)
                     active_processes.append(gate)

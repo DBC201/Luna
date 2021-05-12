@@ -20,12 +20,15 @@ if __name__ == '__main__':
                     text=True
                 )
                 processes.append(bot)
-                bot = None
             ran = True
         time.sleep(5)
         for p in processes:
             stdout, stderr = p.communicate()
-            print(stdout, stderr)
-            del p
+            if stdout:
+                print(stdout)
+            if stderr:
+                print(stderr)
+            if p.poll() is None:
+                del p
         processes.clear()
 
