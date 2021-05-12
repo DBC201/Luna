@@ -58,5 +58,5 @@ if __name__ == '__main__':
                 print(stdout)
             if stderr:
                 print(stderr)
-            del p
-        active_processes.clear()
+            if p.poll() is None:
+                del p

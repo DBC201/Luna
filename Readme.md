@@ -29,7 +29,7 @@ most of the programs seem to work fine. If not one option could be [using deadsn
 Instead just install the listed dependencies manually by doing
     - ```sudo apt install python3-pip``` (check if pip is installed)
     - ```pip3 install python-dotenv```
-    - ```pip3 install python-binance```
+    - ```pip3 install python-binance==0.7.10```
     - ```pip3 install websocket-client```
     - ```pip3 install matplotlib```
 
