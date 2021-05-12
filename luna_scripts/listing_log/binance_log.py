@@ -26,15 +26,18 @@ TRADE_INIT = False
 START = sys.maxsize
 
 
+def write_data():
+    time_str = datetime.datetime.utcfromtimestamp(START).strftime('%Y-%m-%d_%H.%M.%S')
+    path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + ".json")
+    with open(path, 'w') as file:
+        json.dump(TRADES, file)
+
+
 def shutdown():
     try:
         reactor.stop()
     except:
         pass
-    time_str = datetime.datetime.utcfromtimestamp(START).strftime('%Y-%m-%d_%H.%M.%S')
-    path = os.path.join(args.dump_path, SYMBOL+'_'+time_str+".json")
-    with open(path, 'w') as file:
-        json.dump(TRADES, file)
     sys.exit()
 
 
@@ -47,6 +50,7 @@ def trade_callback(data):
         else:
             TRADES.append(data)
             if time.time() - START >= DURATION:
+                write_data()
                 shutdown()
 
 

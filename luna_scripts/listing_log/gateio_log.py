@@ -27,12 +27,11 @@ TRADES = []
 START = time.time()
 
 
-def shutdown():
+def write_data():
     time_str = datetime.utcfromtimestamp(START).strftime('%Y-%m-%d_%H.%M.%S')
-    path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + '_gate' + ".json")
+    path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + ".json")
     with open(path, 'w') as file:
         json.dump(TRADES, file)
-    sys.exit()
 
 
 def on_message(ws, message):
@@ -45,7 +44,8 @@ def on_message(ws, message):
     if message["event"] == "update":
         TRADES.append(message)
         if time.time() - START >= DURATION:
-            shutdown()
+            write_data()
+            sys.exit()
 
 
 def on_open(ws):
