@@ -23,11 +23,6 @@ if __name__ == '__main__':
             ran = True
         time.sleep(5)
         for p in processes:
-            stdout, stderr = p.communicate()
-            if stdout:
-                print(stdout)
-            if stderr:
-                print(stderr)
             if p.poll() is None:
                 del p
         processes.clear()
