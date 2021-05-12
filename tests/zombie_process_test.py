@@ -7,7 +7,7 @@ import concurrent.futures
 
 def initiate_log(symbol, dump_path):
     return subprocess.run(
-        shlex.split(f"python ../luna_scripts/listing_log/binance_log.py {symbol} {dump_path} -d 3"),
+        shlex.split(f"python3 ../luna_scripts/listing_log/binance_log.py {symbol} {dump_path} -d 3"),
         shell=True
     )
 
@@ -25,4 +25,3 @@ if __name__ == '__main__':
                     thread.submit(initiate_log, listing, dump_path)
             ran = True
         time.sleep(5)
-
