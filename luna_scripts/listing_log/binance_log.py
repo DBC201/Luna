@@ -13,15 +13,12 @@ def return_parser():
     return parser
 
 
-'''args = return_parser().parse_args(sys.argv[1:])
+args = return_parser().parse_args(sys.argv[1:])
 SYMBOL = args.symbol.upper()
 DURATION = 60 # in seconds
 DUMP_PATH = args.dump_path
 if args.duration:
-    DURATION = args.duration'''
-SYMBOL = "BTCUSDT"
-DURATION = 5
-DUMP_PATH = "../../trades"
+    DURATION = args.duration
 sock_manager = ThreadedWebsocketManager()
 sock_manager.start()
 TRADES = []

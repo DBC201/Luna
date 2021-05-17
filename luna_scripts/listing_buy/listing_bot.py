@@ -6,7 +6,6 @@ from binance.client import Client
 from binance import ThreadedWebsocketManager
 import time
 import math
-from twisted.internet import reactor
 
 
 def return_parser():
