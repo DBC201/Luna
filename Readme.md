@@ -12,6 +12,7 @@ the modules should work with the right input format which have been documented i
 - Run 'pipenv install' in root folder. This should install the required dependencies.
 - In case of time sync error, sync your os time with internet time.
     - Screenshot for windows:
+    
     ![windows time sync](./docs/pictures/sync%20internet%20time.png)
 - At the time of this readme, Ubuntu repositories only have python up to 3.8. However this doesn't pose an issue and
 most of the programs seem to work fine. If not one option could be [using deadsnakes](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa).
