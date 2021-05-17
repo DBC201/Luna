@@ -3,7 +3,7 @@ import sys
 import argparse
 from dotenv import load_dotenv
 from binance.client import Client
-from binance.websockets import BinanceSocketManager
+from binance import ThreadedWebsocketManager
 import time
 import math
 from twisted.internet import reactor
@@ -27,7 +27,8 @@ SYMBOL = BUY_TYPE + SELL_TYPE
 
 load_dotenv(dotenv_path=env_path)
 client = Client(os.environ["api_key"], os.environ["api_secret"])
-sock_manager = BinanceSocketManager(client)
+sock_manager = ThreadedWebsocketManager()
+sock_manager.start()
 
 IN = False
 IN_PRICE = sys.maxsize
@@ -48,7 +49,7 @@ def round_down(number, decimals):
 
 
 def shutdown(code=0):
-    reactor.stop()
+    sock_manager.stop()
     sys.exit(code)
 
 
@@ -95,5 +96,5 @@ def trade_callback(data):
             shutdown(-1)
 
 
-trade_sock = sock_manager.start_trade_socket(symbol=SYMBOL, callback=trade_callback)
-sock_manager.run()
+sock_manager.start_trade_socket(symbol=SYMBOL, callback=trade_callback)
+
