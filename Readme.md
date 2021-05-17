@@ -8,7 +8,7 @@ the modules should work with the right input format which have been documented i
 - [websocket-client](https://pypi.org/project/websocket-client/)
 - [mathplotlib](https://pypi.org/project/matplotlib/) (for graphing trade data)
 
-
+## Installation
 - Run 'pipenv install' in root folder. This should install the required dependencies.
 - In case of time sync error, sync your os time with internet time.
     - Screenshot for windows:
