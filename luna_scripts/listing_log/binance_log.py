@@ -40,7 +40,6 @@ def shutdown():
 
 def trade_callback(data):
     global START, TRADES, TRADE_INIT
-    print(data)
     if data:
         if not TRADE_INIT:
             TRADE_INIT = True
