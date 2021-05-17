@@ -2,7 +2,6 @@ from binance import ThreadedWebsocketManager
 
 
 def main():
-    symbol = 'BTCUSDT'
 
     twm = ThreadedWebsocketManager()
     twm.start()
@@ -10,7 +9,8 @@ def main():
     def handle_socket_message(msg):
         print(msg)
 
-    twm.start_trade_socket(callback=handle_socket_message, symbol=symbol)
+    streams = ['BNBBTC@miniTicker', 'BNBBTC@bookTicker']
+    twm.start_multiplex_socket(callback=handle_socket_message, streams=streams)
 
 
 if __name__ == "__main__":
