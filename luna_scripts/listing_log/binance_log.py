@@ -22,33 +22,32 @@ if args.duration:
 sock_manager = ThreadedWebsocketManager()
 sock_manager.start()
 TRADES = []
-TRADE_INIT = False
-START = sys.maxsize
+START_TIME = None
+STOPPED = False
 
 
 def write_data():
-    time_str = datetime.datetime.utcfromtimestamp(START).strftime('%Y-%m-%d_%H.%M.%S')
+    time_str = datetime.datetime.utcfromtimestamp(START_TIME).strftime('%Y-%m-%d_%H.%M.%S')
     path = os.path.join(DUMP_PATH, SYMBOL + '_' + time_str + ".json")
     with open(path, 'w') as file:
         json.dump(TRADES, file)
 
 
-def shutdown():
-    sock_manager.stop()
-    sys.exit()
-
-
 def trade_callback(data):
-    global START, TRADES, TRADE_INIT
-    if data:
-        if not TRADE_INIT:
-            TRADE_INIT = True
-            START = time.time()
-        else:
-            TRADES.append(data)
-            if time.time() - START >= DURATION:
-                write_data()
-                shutdown()
+    global START_TIME, TRADES, STOPPED
+    if STOPPED:
+        return
+    current_time = data['T']/1000
+    if not START_TIME:
+        START_TIME = current_time
+    else:
+        TRADES.append(data)
+        if current_time - START_TIME >= DURATION:
+            STOPPED = True
 
 
 sock_manager.start_trade_socket(callback=trade_callback, symbol=SYMBOL)
+while not STOPPED:
+    time.sleep(1)
+sock_manager.stop()
+write_data()
