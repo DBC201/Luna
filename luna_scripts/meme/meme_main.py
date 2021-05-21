@@ -82,13 +82,14 @@ class Ticker:
 
     def reset(self):
         """
-        Set all mail flags to false
+        Set all mail flags to false and reset the initial price
 
         :return: None
         """
         self.dumped = False
         self.pumped = False
         self.called_vitalik = False
+        self.initial_price = self.current_price
 
 
 if __name__ == '__main__':
@@ -119,7 +120,6 @@ if __name__ == '__main__':
         # update old price every hour
         minutes += 1
         if minutes % 60 == 0:
-            initial_prices = current_prices
             for name in tickers:
                 tickers[name].reset()
         time.sleep(60)
