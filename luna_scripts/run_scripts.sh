@@ -12,3 +12,7 @@ cd ..
 cd "$current_path/listing_log"
 nohup python3 auto_log.py > "$output_path/log_output.txt" &
 cd ..
+
+cd "$current_path/meme"
+nohup python3 meme_main.py > "$output_path/meme_output.txt" &
+cd ..
