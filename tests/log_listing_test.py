@@ -26,13 +26,13 @@ if __name__ == '__main__':
         stderr=subprocess.PIPE,
         text=True
     )
-    gate_io = subprocess.Popen(
+    '''gate_io = subprocess.Popen(
         shlex.split(f"python ../luna_scripts/listing_log/gateio_log.py {symbol + '_' + quote} {save_path} -d 3"),
         shell=True,
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True
-    )
+    )'''
     print_output(binance)
-    print_output(gate_io)
+    #print_output(gate_io)

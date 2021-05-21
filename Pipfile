@@ -4,12 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-setuptools = "*"
-twisted = {path = "./Twisted-20.3.0-cp39-cp39-win_amd64.whl"}
-python-binance = "==0.7.10"
 python-dotenv = "*"
 matplotlib = "*"
 websocket-client = "*"
+python-binance = "*"
 
 [dev-packages]
 

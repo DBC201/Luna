@@ -24,28 +24,28 @@ DURATION = 300  # in seconds
 if args.duration:
     DURATION = args.duration
 TRADES = []
-START = time.time()
+START_TIME = time.time()
 
 
-def shutdown():
-    time_str = datetime.utcfromtimestamp(START).strftime('%Y-%m-%d_%H.%M.%S')
-    path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + '_gate' + ".json")
+def write_data():
+    time_str = datetime.utcfromtimestamp(START_TIME).strftime('%Y-%m-%d_%H.%M.%S')
+    path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + ".json")
     with open(path, 'w') as file:
         json.dump(TRADES, file)
-    sys.exit()
 
 
 def on_message(ws, message):
     # type: (GateWebSocketApp, str) -> None
     # handle whatever message you received
-    global START
+    global START_TIME
     message = json.loads(message)
     if message["event"] == "subscribe":
         START = time.time()
     if message["event"] == "update":
         TRADES.append(message)
         if time.time() - START >= DURATION:
-            shutdown()
+            write_data()
+            sys.exit()
 
 
 def on_open(ws):
