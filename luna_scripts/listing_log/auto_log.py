@@ -16,7 +16,7 @@ if __name__ == '__main__':
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
 
-    listing_time = calendar.timegm(dateparser.parse("1 am UTC").timetuple())
+    listing_time = None
     symbols = scraper.get_symbols()
 
     while True:
