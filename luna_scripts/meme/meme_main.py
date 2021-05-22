@@ -68,6 +68,7 @@ class Ticker:
     Contains data about ticker name, price at last hour and current price
 
     Ex: "BTCUSDT" 65000 66000
+
     :param identifier: ticker symbol (ex: "BTCUSDT")
     :type identifier: string
     :param initial_price: price of coin
@@ -108,6 +109,9 @@ if __name__ == '__main__':
         # Check prices for all tickers
         for name in tickers:
             t = tickers[name]
+            # Check USDT parities only
+            if t.identifier[:-4] != "USDT":
+                continue
             if (t.current_price < t.initial_price * 0.9) and not t.dumped:
                 send_bogdanoff(t.identifier)
                 t.dumped = True
