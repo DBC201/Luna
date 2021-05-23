@@ -110,7 +110,7 @@ if __name__ == '__main__':
         for name in tickers:
             t = tickers[name]
             # Check USDT parities only
-            if t.identifier[:-4] != "USDT":
+            if t.identifier[-4:] != "USDT":
                 continue
             if (t.current_price < t.initial_price * 0.9) and not t.dumped:
                 send_bogdanoff(t.identifier)
