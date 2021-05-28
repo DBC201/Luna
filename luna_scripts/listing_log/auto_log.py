@@ -17,7 +17,7 @@ if __name__ == '__main__':
         os.mkdir(save_folder)
 
     listing_time = None
-    symbols = scraper.get_symbols()
+    symbols = {}
 
     while True:
         scraper.refresh()
