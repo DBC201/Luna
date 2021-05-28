@@ -22,15 +22,18 @@ class EmailWrapper:
     :type sender_mail: string
     :param password: password of the email address
     :type password: string
+    :param signature_text: signature text that will appear at the bottom of the email
+    :type signature_text: string
     :param database_dir: directory of the database
     :type database_dir: string
     """
-    def __init__(self, port, smtp_server, sender_email, password,
+    def __init__(self, port, smtp_server, sender_email, password, signature_text,
                  database_dir=os.path.join(current_dir, "mailing_list.db")):
         self.__port = port
         self.__smtp_server = smtp_server
         self.__sender_email = sender_email
         self.__password = password
+        self.__signature_text = signature_text
         self.__database_dir = database_dir
 
     def send_email(self, receiver_email, content):
@@ -101,9 +104,10 @@ class EmailWrapper:
                             + body +
                             """</p>
                     <img src="cid:{image_cid}">
+                    <p>{signature}</p>
                 </body>
             </html>
-            """.format(image_cid=image_cid[1:-1]), subtype='html')
+            """.format(signature=self.__signature_text, image_cid=image_cid[1:-1]), subtype='html')
         # image_cid looks like <long.random.number@xyz.com>
         # to use it as the img src, we don't need `<` or `>`
         # so we use [1:-1] to strip them off
@@ -146,7 +150,7 @@ class EmailWrapper:
                     msg = self.email_with_picture(subject, email, body, img)
                     self.send_email(email, msg.as_string())
                 else:
-                    self.send_email(email, "Subject: " + subject + '\n\n' + body)
+                    self.send_email(email, "Subject: " + subject + '\n\n' + body + '\n' + self.__signature_text)
             except FileNotFoundError as e:
                 print(e)
             except:

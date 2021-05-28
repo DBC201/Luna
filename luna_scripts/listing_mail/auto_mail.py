@@ -13,7 +13,8 @@ if __name__ == '__main__':
         port=int(os.environ["ssl_port"]),
         smtp_server=os.environ["smtp_server"],
         sender_email=os.environ["email"],
-        password=os.environ["email_password"]
+        password=os.environ["email_password"],
+        signature_text="https://bogdanoff.pw"
     )
 
     last_announcement = scraper.get_announcement()
