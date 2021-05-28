@@ -16,3 +16,6 @@ cd ..
 cd "$current_path/meme"
 nohup python3 meme_main.py > "$output_path/meme_output.txt" &
 cd ..
+
+echo "Active python3 processes:"
+ps aux | grep python3
