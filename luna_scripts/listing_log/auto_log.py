@@ -16,9 +16,6 @@ if __name__ == '__main__':
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
 
-    listing_time = None
-    symbols = {}
-
     while True:
         scraper.refresh()
         current_announcement = scraper.get_announcement()
