@@ -74,8 +74,9 @@ class BinanceLog:
         """
         for symbol in self.__logs:
             log = self.__logs[symbol]
-            start_time = log[0]['T']/1000
-            time_str = datetime.datetime.utcfromtimestamp(start_time).strftime('%Y-%m-%d_%H.%M.%S')
-            file_path = os.path.join(path, symbol + '_' + time_str + ".json")
-            with open(file_path, 'w') as file:
-                json.dump(log, file)
+            if log:
+                start_time = log[0]['T']/1000
+                time_str = datetime.datetime.utcfromtimestamp(start_time).strftime('%Y-%m-%d_%H.%M.%S')
+                file_path = os.path.join(path, symbol + '_' + time_str + ".json")
+                with open(file_path, 'w') as file:
+                    json.dump(log, file)
