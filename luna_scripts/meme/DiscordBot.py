@@ -36,22 +36,25 @@ def load_meme(condition):
         return discord.File(file)
 
 
-def dump_eet():
+def dump_eet(ticker):
+    link = "https://www.binance.com/en/trade/" + ticker
     channels = get_channels()
     for channel in channels:
-        send_message(channel, "dump eet", file=load_meme("dump"))
+        send_message(channel, f"dump eet: {link}", file=load_meme("dump"))
 
 
-def pump_eet():
+def pump_eet(ticker):
+    link = "https://www.binance.com/en/trade/" + ticker
     channels = get_channels()
     for channel in channels:
-        send_message(channel, "pump eet", file=load_meme("pump"))
+        send_message(channel, f"pump eet: {link}", file=load_meme("pump"))
 
 
-def call_vitalik():
+def call_vitalik(ticker):
+    link = "https://www.binance.com/en/trade/" + ticker
     channels = get_channels()
     for channel in channels:
-        send_message(channel, "put vitalik on zhe line", file=load_meme("vitalik"))
+        send_message(channel, f"put vitalik on zhe line: {link}", file=load_meme("vitalik"))
 
 
 async def send_message(channel_id, message, file=None):
@@ -88,6 +91,7 @@ async def on_message(message):
         else:
             cursor.execute("INSERT INTO channels(id, valid) VALUES(?,?)", [message.channel.id, 1])
             database.commit()
+            await message.channel.send("added this channel to notification list")
 
     async def remove_channel():
         cursor.execute("SELECT * FROM channels WHERE id = ?", [message.channel.id])
@@ -97,6 +101,7 @@ async def on_message(message):
         else:
             cursor.execute("DELETE FROM channels where id = ?", [message.channel.id])
             database.commit()
+            await message.channel.send("removed this channel from notification list")
 
     async def help_command():
         await message.channel.send("Type bogdanoff:add to add this channel, bogdanoff:remove to remove")
