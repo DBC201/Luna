@@ -19,6 +19,7 @@ Currently, the bot sends messages about market change to the added channels.
 ## Dependencies
 - [python-binance](https://github.com/sammchardy/python-binance)
 - [python-dotenv](https://pypi.org/project/python-dotenv/)
+- [discord.py](https://pypi.org/project/discord.py/)  
 - [websocket-client](https://pypi.org/project/websocket-client/)
 - [mathplotlib](https://pypi.org/project/matplotlib/) 
   (for graphing trade data, not essential if you won't use [Luna to graph](luna_modules/trade_analysis))
