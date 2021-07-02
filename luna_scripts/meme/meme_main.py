@@ -63,15 +63,15 @@ if __name__ == '__main__':
                 continue
             if (t.current_price < t.initial_price * 0.9) and not t.dumped:
                 # EmailMemes.send_bogdanoff(t.identifier)
-                DiscordBot.dump_eet()
+                DiscordBot.dump_eet(t.identifier)
                 t.dumped = True
             if (t.current_price > t.initial_price * 1.1) and not t.pumped:
                 # EmailMemes.send_jesse(t.identifier)
-                DiscordBot.pump_eet()
+                DiscordBot.pump_eet(t.identifier)
                 t.pumped = True
             if (t.current_price > t.initial_price * 1.5) and not t.called_vitalik:
                 # EmailMemes.get_vitalik_on_the_line(t.identifier)
-                DiscordBot.call_vitalik()
+                DiscordBot.call_vitalik(t.identifier)
                 t.called_vitalik = True
         # update old price every hour
         minutes += 1
