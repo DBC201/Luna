@@ -1,11 +1,13 @@
 import discord
 import sqlite3
 import re
+import random
 
 import os, sys
 from dotenv import load_dotenv
 
-ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
+CURRENT = os.path.dirname(__file__)
+ROOT = os.path.join(CURRENT, "..", "..")
 sys.path.append(ROOT)
 ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
@@ -27,36 +29,43 @@ def get_channels():
     return [int(r[0]) for r in cursor.fetchall()]
 
 
+def load_meme(condition):
+    meme = random.choice(os.listdir(os.path.join(CURRENT, condition)))
+    meme = os.path.join(CURRENT, condition, meme)
+    with open(meme, 'rb') as file:
+        return discord.File(file)
+
+
 def dump_eet():
     channels = get_channels()
     for channel in channels:
-        send_message(channel, "dump eet")
+        send_message(channel, "dump eet", file=load_meme("dump"))
 
 
 def pump_eet():
     channels = get_channels()
     for channel in channels:
-        send_message(channel, "pump eet")
+        send_message(channel, "pump eet", file=load_meme("pump"))
 
 
 def call_vitalik():
     channels = get_channels()
     for channel in channels:
-        send_message(channel, "put vitalik on zhe line")
+        send_message(channel, "put vitalik on zhe line", file=load_meme("vitalik"))
 
 
-async def send_message(channel_id, message):
+async def send_message(channel_id, message, file=None):
     channel = client.get_channel(int(channel_id))
-    await channel.send(message)
+    await channel.send(message, file=file)
 
 
 @client.event
 async def on_ready():
     print('Bot logged in as {0.user}'.format(client))
     print("In guilds:\n", "\n".join([guild.name for guild in client.guilds]))
-    '''channels = get_channels()
+    channels = get_channels()
     for channel in channels:
-        await send_message(channel, "load ze fud")'''
+        await send_message(channel, "load ze fud", file=load_meme("wojak"))
 
 
 @client.event
