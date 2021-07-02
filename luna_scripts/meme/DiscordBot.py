@@ -3,7 +3,6 @@ import sqlite3
 import re
 import random
 from dotenv import load_dotenv
-import time
 from discord.ext import tasks
 
 import os, sys
