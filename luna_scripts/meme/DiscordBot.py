@@ -80,7 +80,7 @@ async def send_message(channel_id, message, file=None):
 
 @tasks.loop(minutes=1)
 async def check_prices():
-    global minutes
+    global minutes, tickers
     # Update current prices of all tickers
     current_prices = apiWrapper.get_price_dict()
     for name in tickers:
