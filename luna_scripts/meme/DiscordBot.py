@@ -2,13 +2,20 @@ import discord
 import sqlite3
 import re
 import random
+from dotenv import load_dotenv
+import time
 
 import os, sys
-from dotenv import load_dotenv
-
 CURRENT = os.path.dirname(__file__)
 ROOT = os.path.join(CURRENT, "..", "..")
 sys.path.append(ROOT)
+
+from luna_modules.binance.BinanceApiWrapper import BinanceApiWrapper
+# from EmailMemes import EmailMemes
+from Ticker import Ticker
+
+apiWrapper = BinanceApiWrapper()
+
 ENV_PATH = os.path.join(ROOT, ".env.local")
 load_dotenv(dotenv_path=ENV_PATH)
 
@@ -36,25 +43,25 @@ def load_meme(condition):
         return discord.File(file)
 
 
-def dump_eet(ticker):
+async def dump_eet(ticker):
     link = "https://www.binance.com/en/trade/" + ticker
     channels = get_channels()
     for channel in channels:
-        send_message(channel, f"dump eet: {link}", file=load_meme("dump"))
+        await send_message(channel, f"dump eet: {link}", file=load_meme("dump"))
 
 
-def pump_eet(ticker):
+async def pump_eet(ticker):
     link = "https://www.binance.com/en/trade/" + ticker
     channels = get_channels()
     for channel in channels:
-        send_message(channel, f"pump eet: {link}", file=load_meme("pump"))
+        await send_message(channel, f"pump eet: {link}", file=load_meme("pump"))
 
 
-def call_vitalik(ticker):
+async def call_vitalik(ticker):
     link = "https://www.binance.com/en/trade/" + ticker
     channels = get_channels()
     for channel in channels:
-        send_message(channel, f"put vitalik on zhe line: {link}", file=load_meme("vitalik"))
+        await send_message(channel, f"put vitalik on zhe line: {link}", file=load_meme("vitalik"))
 
 
 async def send_message(channel_id, message, file=None):
@@ -70,6 +77,41 @@ async def on_ready():
     channels = get_channels()
     for channel in channels:
         await send_message(channel, "load ze fud", file=load_meme("wojak"))
+    initial_prices = apiWrapper.get_price_dict()
+    tickers = dict()
+    for p in initial_prices:
+        tickers[p] = Ticker(p, initial_prices[p])
+    # Check every minute for price fluctuations
+    minutes = 0
+    while True:
+        # Update current prices of all tickers
+        current_prices = apiWrapper.get_price_dict()
+        for name in tickers:
+            tickers[name].current_price = current_prices[name]
+        # Check prices for all tickers
+        for name in tickers:
+            t = tickers[name]
+            # Check USDT parities only
+            if t.identifier[-4:] != "USDT":
+                continue
+            if (t.current_price < t.initial_price * 0.9) and not t.dumped:
+                # EmailMemes.send_bogdanoff(t.identifier)
+                await dump_eet(t.identifier)
+                t.dumped = True
+            if (t.current_price > t.initial_price * 1.1) and not t.pumped:
+                # EmailMemes.send_jesse(t.identifier)
+                await pump_eet(t.identifier)
+                t.pumped = True
+            if (t.current_price > t.initial_price * 1.5) and not t.called_vitalik:
+                # EmailMemes.get_vitalik_on_the_line(t.identifier)
+                await call_vitalik(t.identifier)
+                t.called_vitalik = True
+        # update old price every hour
+        minutes += 1
+        if minutes % 60 == 0:
+            for name in tickers:
+                tickers[name].reset()
+        time.sleep(60)
 
 
 @client.event
@@ -125,5 +167,6 @@ async def on_error(event, *args, **kwargs):
             f.write(f'\nUnhandled message: {args[0]}')
         else:
             raise
+
 
 client.run(discord_token)
