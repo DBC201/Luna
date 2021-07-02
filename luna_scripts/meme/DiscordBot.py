@@ -139,7 +139,7 @@ async def on_message(message):
         else:
             cursor.execute("INSERT INTO channels(id, valid) VALUES(?,?)", [message.channel.id, 1])
             database.commit()
-            await message.channel.send("added this channel to notification list")
+            await message.channel.send("Bonjour, gentlemen.")
 
     async def remove_channel():
         cursor.execute("SELECT * FROM channels WHERE id = ?", [message.channel.id])
