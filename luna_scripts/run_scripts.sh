@@ -14,7 +14,7 @@ nohup python3 auto_log.py > "$output_path/log_output.txt" &
 cd ..
 
 cd "$current_path/meme"
-nohup python3 meme_main.py > "$output_path/meme_output.txt" &
+nohup python3 DiscordBot.py > "$output_path/meme_output.txt" &
 cd ..
 
 echo "Active python3 processes:"
