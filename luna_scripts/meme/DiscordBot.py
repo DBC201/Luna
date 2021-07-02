@@ -34,38 +34,6 @@ for p in initial_prices:
 minutes = 0
 
 
-@tasks.loop(minutes=1)
-async def check_prices():
-    global minutes
-    # Update current prices of all tickers
-    current_prices = apiWrapper.get_price_dict()
-    for name in tickers:
-        tickers[name].current_price = current_prices[name]
-    # Check prices for all tickers
-    for name in tickers:
-        t = tickers[name]
-        # Check USDT parities only
-        if t.identifier[-4:] != "USDT":
-            continue
-        if (t.current_price < t.initial_price * 0.9) and not t.dumped:
-            # EmailMemes.send_bogdanoff(t.identifier)
-            await dump_eet(t.identifier)
-            t.dumped = True
-        if (t.current_price > t.initial_price * 1.1) and not t.pumped:
-            # EmailMemes.send_jesse(t.identifier)
-            await pump_eet(t.identifier)
-            t.pumped = True
-        if (t.current_price > t.initial_price * 1.5) and not t.called_vitalik:
-            # EmailMemes.get_vitalik_on_the_line(t.identifier)
-            await call_vitalik(t.identifier)
-            t.called_vitalik = True
-    # update old price every hour
-    minutes += 1
-    if minutes % 60 == 0:
-        for name in tickers:
-            tickers[name].reset()
-
-
 def get_channels():
     """get channel ids from database
 
@@ -108,6 +76,38 @@ async def send_message(channel_id, message, file=None):
     channel = client.get_channel(int(channel_id))
     if channel:
         await channel.send(message, file=file)
+
+
+@tasks.loop(minutes=1)
+async def check_prices():
+    global minutes
+    # Update current prices of all tickers
+    current_prices = apiWrapper.get_price_dict()
+    for name in tickers:
+        tickers[name].current_price = current_prices[name]
+    # Check prices for all tickers
+    for name in tickers:
+        t = tickers[name]
+        # Check USDT parities only
+        if t.identifier[-4:] != "USDT":
+            continue
+        if (t.current_price < t.initial_price * 0.9) and not t.dumped:
+            # EmailMemes.send_bogdanoff(t.identifier)
+            await dump_eet(t.identifier)
+            t.dumped = True
+        if (t.current_price > t.initial_price * 1.1) and not t.pumped:
+            # EmailMemes.send_jesse(t.identifier)
+            await pump_eet(t.identifier)
+            t.pumped = True
+        if (t.current_price > t.initial_price * 1.5) and not t.called_vitalik:
+            # EmailMemes.get_vitalik_on_the_line(t.identifier)
+            await call_vitalik(t.identifier)
+            t.called_vitalik = True
+    # update old price every hour
+    minutes += 1
+    if minutes % 60 == 0:
+        for name in tickers:
+            tickers[name].reset()
 
 
 @client.event
