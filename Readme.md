@@ -3,6 +3,18 @@ Luna is a program consisting of different modules and scripts for binance using 
 the modules should work with the right input format which have been documented in their relative folder. 
 - [Github repo](https://github.com/DBC201/Luna)
 - [demo website](https://bogdanoff.pw)
+- [Try out the discord bot](https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot)
+
+## Discord Bot
+Currently, the bot sends messages about market change to the added channels. 
+### Discord Bot Commands
+- bogdanoff: add
+  - adds the channel the message has been sent from to the database
+- bogdanoff: remove
+  - removes that channel
+- bogdanoff: help
+  - displays a help prompt
+
 
 ## Dependencies
 - [python-binance](https://github.com/sammchardy/python-binance)
