@@ -56,7 +56,8 @@ def call_vitalik():
 
 async def send_message(channel_id, message, file=None):
     channel = client.get_channel(int(channel_id))
-    await channel.send(message, file=file)
+    if channel:
+        await channel.send(message, file=file)
 
 
 @client.event
