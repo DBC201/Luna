@@ -9,7 +9,7 @@ ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 
 load_dotenv(dotenv_path=os.path.join(ROOT, ".env.local"))
 client = Client(api_key=os.environ["api_key"], api_secret=os.environ["api_secret"])
-DUMP_FOLDER = os.path.join(ROOT, "trades")
+DUMP_FOLDER = os.path.join(ROOT, "historical_trades")
 
 
 def dump_minute_trades(symbol):
