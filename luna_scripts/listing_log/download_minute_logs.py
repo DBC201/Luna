@@ -63,4 +63,5 @@ if __name__ == '__main__':
         symbol = ticker["symbol"]
         if symbol not in existing_trades:
             dump_minute_trades(symbol)
+            existing_trades.update({symbol: True})
         i += 1
