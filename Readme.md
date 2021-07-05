@@ -6,7 +6,8 @@ the modules should work with the right input format which have been documented i
 - [Try out the discord bot](https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot)
 
 ## Discord Bot
-Currently, the bot sends messages about market change to the added channels. 
+Currently, the bot sends messages about market change to the added channels. It will message in 10% price increase,
+10% decrease, 50% increase in the past 60 minutes for a given coin. 
 ### Discord Bot Commands
 - bogdanoff: add
   - adds the channel the message has been sent from to the database
