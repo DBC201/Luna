@@ -36,12 +36,15 @@ def dump_minute_trades(symbol):
     ]
     """
     id = 0
+    trades = client.get_historical_trades(symbol=symbol, fromId=id)
+    start_time = trades[0]["time"]/1000
+    seconds = 0
     while True:
-        trades = client.get_historical_trades(symbol=symbol, fromId=id)
-        last_trade_time = trades[-1]["time"]/1000
-        id = trades[-1]["id"] + 1
-        if last_trade_time >= 60:
+        seconds = trades[-1]["time"]/1000 - start_time
+        if seconds >= 60:
             break
+        id = len(trades)
+        trades += client.get_historical_trades(symbol=symbol, fromId=id)
     time_str = datetime.datetime.utcfromtimestamp(trades[0]["time"]/1000).strftime('%Y-%m-%d_%H.%M.%S')
     file_path = os.path.join(DUMP_FOLDER, symbol + '_' + time_str + ".json")
     with open(file_path, 'w') as file:
