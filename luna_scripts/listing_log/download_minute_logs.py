@@ -38,7 +38,6 @@ def dump_minute_trades(symbol):
     id = 0
     trades = client.get_historical_trades(symbol=symbol, fromId=id)
     start_time = trades[0]["time"]/1000
-    seconds = 0
     while True:
         seconds = trades[-1]["time"]/1000 - start_time
         if seconds >= 60:
