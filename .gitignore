@@ -4,6 +4,7 @@ __pycache__/
 outputs/
 live_trades/
 historical_trades/
+compressed/
 luna_modules/email/mailing_list.db
 luna_scripts/meme/database.db
 luna_scripts/meme/err.log
