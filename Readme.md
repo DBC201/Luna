@@ -16,7 +16,6 @@ Currently, the bot sends messages about market change to the added channels. It 
 - bogdanoff: help
   - displays a help prompt
 
-
 ## Dependencies
 - [python-binance](https://github.com/sammchardy/python-binance)
 - [python-dotenv](https://pypi.org/project/python-dotenv/)
@@ -33,6 +32,24 @@ Currently, the bot sends messages about market change to the added channels. It 
     - Screenshot for windows:
     
     ![windows time sync](./docs/pictures/sync%20internet%20time.png)
+
+## Scripts
+### listing_buy
+This is a bot that listens for trades, and will automatically buy when it gets a trade. It will sell if certain conditions
+are met. (TODO)
+### listing_log
+TODO
+### listing_mail
+TODO
+### meme
+TODO
+
+## Modules
+TODO
+
+## Tests
+These are just random scripts I have written while testing functionality and pieces of code. They aren't much organized
+and are a pain to look at.
 
 ## Creators
 - [Atilla Turkmen](https://github.com/atillaturkmen)
