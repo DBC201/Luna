@@ -6,7 +6,8 @@ the modules should work with the right input format which have been documented i
 - [Try out the discord bot](https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot)
 
 ## Discord Bot
-Currently, the bot sends messages about market change to the added channels. 
+Currently, the bot sends messages about market change to the added channels. It will message in 10% price increase,
+10% decrease, 50% increase in the past 60 minutes for a given coin. 
 ### Discord Bot Commands
 - bogdanoff: add
   - adds the channel the message has been sent from to the database
@@ -14,7 +15,6 @@ Currently, the bot sends messages about market change to the added channels.
   - removes that channel
 - bogdanoff: help
   - displays a help prompt
-
 
 ## Dependencies
 - [python-binance](https://github.com/sammchardy/python-binance)
@@ -32,6 +32,24 @@ Currently, the bot sends messages about market change to the added channels.
     - Screenshot for windows:
     
     ![windows time sync](./docs/pictures/sync%20internet%20time.png)
+
+## Scripts
+### listing_buy
+This is a bot that listens for trades, and will automatically buy when it gets a trade. It will sell if certain conditions
+are met. (TODO)
+### listing_log
+TODO
+### listing_mail
+TODO
+### meme
+TODO
+
+## Modules
+TODO
+
+## Tests
+These are just random scripts I have written while testing functionality and pieces of code. They aren't much organized
+and are a pain to look at.
 
 ## Creators
 - [Atilla Turkmen](https://github.com/atillaturkmen)

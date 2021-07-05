@@ -15,7 +15,7 @@ def print_output(process):
 if __name__ == '__main__':
     symbol="BTC"
     quote="USDT"
-    save_path = "../trades"
+    save_path = "../live_trades"
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
     binance = subprocess.Popen(

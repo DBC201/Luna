@@ -2,7 +2,8 @@
 .idea
 __pycache__/
 outputs/
-trades/
+live_trades/
+historical_trades/
 luna_modules/email/mailing_list.db
 luna_scripts/meme/database.db
 luna_scripts/meme/err.log

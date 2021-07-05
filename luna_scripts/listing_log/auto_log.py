@@ -9,9 +9,9 @@ from luna_modules.binance.BinanceLog import BinanceLog
 
 if __name__ == '__main__':
     scraper = BinanceAnnouncementScrape()
-    last_announcement = ''
+    last_announcement = scraper.get_announcement()
     listing_time = None
-    save_folder = os.path.join(ROOT, "trades")
+    save_folder = os.path.join(ROOT, "live_trades")
     symbols = {}
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
