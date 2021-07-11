@@ -26,13 +26,6 @@ client = discord.Client()
 database = sqlite3.connect(os.path.join(os.path.dirname(__file__), "database.db"))
 cursor = database.cursor()
 
-initial_prices = apiWrapper.get_price_dict()
-tickers = dict()
-for p in initial_prices:
-    tickers[p] = Ticker(p, initial_prices[p])
-# Check every minute for price fluctuations
-minutes = 0
-
 
 def get_channels():
     """get channel ids from database
@@ -78,16 +71,26 @@ async def send_message(channel_id, message, file=None):
         await channel.send(message, file=file)
 
 
+initial_prices = apiWrapper.get_price_dict()
+tickers = dict()
+for p in initial_prices:
+    tickers[p] = Ticker(p, initial_prices[p])
+# Check every minute for price fluctuations
+minutes = 0
+
+
 @tasks.loop(minutes=1)
 async def check_prices():
     global minutes, tickers
     # Update current prices of all tickers
     current_prices = apiWrapper.get_price_dict()
-    for name in tickers:
-        tickers[name].current_price = current_prices[name]
-    # Check prices for all tickers
-    for name in tickers:
+    for name in current_prices:
+        if name not in tickers:
+            tickers.update({name: Ticker(name, current_prices[name])})
+        else:
+            tickers[name].current_price = current_prices[name]
         t = tickers[name]
+
         # Check USDT parities only
         if t.identifier[-4:] != "USDT":
             continue
@@ -103,6 +106,7 @@ async def check_prices():
             # EmailMemes.get_vitalik_on_the_line(t.identifier)
             await call_vitalik(t.identifier)
             t.called_vitalik = True
+
     # update old price every hour
     minutes += 1
     if minutes % 60 == 0:
@@ -114,9 +118,6 @@ async def check_prices():
 async def on_ready():
     print('Bot logged in as {0.user}'.format(client))
     print("In guilds:\n", "\n".join([guild.name for guild in client.guilds]))
-    channels = get_channels()
-    for channel in channels:
-        await send_message(channel, "load ze fud", file=load_meme("wojak"))
     check_prices.start()
 
 
