@@ -1,62 +1,70 @@
-import argparse
 import json
+import datetime
 import os
-import sys
-from datetime import datetime
-import time
+from dotenv import load_dotenv
+from luna_modules.gate_io.GateApiWrapper import get_first_thousand_orders, get_all_tickers
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
-sys.path.append(ROOT)
-from luna_modules.gate_io.GateWebSocketApp import GateWebSocketApp
+
+load_dotenv(dotenv_path=os.path.join(ROOT, ".env.local"))
+DUMP_FOLDER = os.path.join(ROOT, "historical_trades", "gate_io")
 
 
-def return_parser():
-    parser = argparse.ArgumentParser(description="Log minute trades in gate.io")
-    parser.add_argument("symbol", type=str, help="trades to log (ex:BTC_USDT)")
-    parser.add_argument("dump_path", type=str, help="directory to dump trades")
-    parser.add_argument("-d", "--duration", type=int, dest="duration", help="time in seconds")
-    return parser
+def main():
+    # create dump folder if it doesn't exist
+    if not os.path.isdir(DUMP_FOLDER):
+        os.makedirs(DUMP_FOLDER)
+    # don't take existing info again
+    existing_files = os.listdir(DUMP_FOLDER)
+    existing_trades = set()
+    for filename in existing_files:
+        symbol = filename.split('-')[0]
+        existing_trades.add(symbol)
+    # dump info for all non existing symbols
+    tickers = get_all_tickers()
+    i = 0
+    for ticker in tickers:
+        print("{}% done".format((i / len(tickers) * 100)))
+        symbol = ticker["id"]
+        if symbol not in existing_trades:
+            dump_minute_trades(symbol)
+            existing_trades.add(symbol)
+        i += 1
 
 
-args = return_parser().parse_args(sys.argv[1:])
-SYMBOL = args.symbol.upper()
-DURATION = 300  # in seconds
-if args.duration:
-    DURATION = args.duration
-TRADES = []
-START_TIME = time.time()
+def dump_minute_trades(symbol):
+    """Dump minute trades for a symbol
+
+    A single trade representation:
+      {
+        "id": "1232893232",
+        "create_time": "1548000000",
+        "create_time_ms": "1548000000123.456",
+        "order_id": "4128442423",
+        "side": "buy",
+        "role": "maker",
+        "amount": "0.15",
+        "price": "0.03",
+        "fee": "0.0005",
+        "fee_currency": "ETH",
+        "point_fee": "0",
+        "gt_fee": "0"
+      }
+    """
+    last_id = 1
+    trades = get_first_thousand_orders(symbol, last_id)
+    start_time = float(trades[-1]["create_time_ms"])
+    while True:
+        milliseconds = float(trades[0]["create_time_ms"]) - start_time
+        if milliseconds >= 60_000:
+            break
+        last_id = trades[0]["id"]
+        trades = get_first_thousand_orders(symbol, last_id) + trades
+    time_str = datetime.datetime.utcfromtimestamp(start_time / 1000).strftime('%Y-%m-%d_%H.%M.%S')
+    file_path = os.path.join(DUMP_FOLDER, symbol + '-' + time_str + ".json")
+    with open(file_path, 'w') as file:
+        json.dump(trades, file)
 
 
-def write_data():
-    time_str = datetime.utcfromtimestamp(START_TIME).strftime('%Y-%m-%d_%H.%M.%S')
-    path = os.path.join(args.dump_path, SYMBOL + '_' + time_str + ".json")
-    with open(path, 'w') as file:
-        json.dump(TRADES, file)
-
-
-def on_message(ws, message):
-    # type: (GateWebSocketApp, str) -> None
-    # handle whatever message you received
-    global START_TIME
-    message = json.loads(message)
-    if message["event"] == "subscribe":
-        START = time.time()
-    if message["event"] == "update":
-        TRADES.append(message)
-        if time.time() - START >= DURATION:
-            write_data()
-            sys.exit()
-
-
-def on_open(ws):
-    # type: (GateWebSocketApp) -> None
-    # subscribe to channels interested
-    ws.subscribe("spot.trades", [SYMBOL], False)
-
-
-if __name__ == "__main__":
-    app = GateWebSocketApp("YOUR_API_KEY",
-                           "YOUR_API_SECRET",
-                           on_open=on_open,
-                           on_message=on_message)
-    app.run_forever(ping_interval=1)
+if __name__ == '__main__':
+    main()
