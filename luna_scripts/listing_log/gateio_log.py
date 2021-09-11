@@ -1,7 +1,10 @@
 import json
 import datetime
 import os
+import sys
 from dotenv import load_dotenv
+ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
+sys.path.append(ROOT)
 from luna_modules.gate_io.GateApiWrapper import get_first_thousand_orders, get_all_tickers
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
