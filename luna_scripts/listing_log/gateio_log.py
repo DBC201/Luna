@@ -56,7 +56,7 @@ def dump_minute_trades(symbol):
     """
     last_id = 1
     trades = get_first_thousand_orders(symbol, last_id)
-    if trades.length == 0:
+    if len(trades) == 0:
         print(symbol + " is empty")
         return
     start_time = float(trades[-1]["create_time_ms"])
