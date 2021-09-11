@@ -3,7 +3,6 @@ import datetime
 import os
 import sys
 from dotenv import load_dotenv
-from collections import deque
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 sys.path.append(ROOT)
 from luna_modules.gate_io.GateApiWrapper import get_first_thousand_orders, get_all_tickers
@@ -56,18 +55,18 @@ def dump_minute_trades(symbol):
       }
     """
     last_id = 1
-    trades = deque(get_first_thousand_orders(symbol, last_id))
+    trades = get_first_thousand_orders(symbol, last_id)
     start_time = float(trades[-1]["create_time_ms"])
     while True:
         milliseconds = float(trades[0]["create_time_ms"]) - start_time
         if milliseconds >= 60_000:
             break
         last_id = trades[0]["id"]
-        trades.appendleft(get_first_thousand_orders(symbol, last_id))
+        trades = get_first_thousand_orders(symbol, last_id) + trades
     time_str = datetime.datetime.utcfromtimestamp(start_time / 1000).strftime('%Y-%m-%d_%H.%M.%S')
     file_path = os.path.join(DUMP_FOLDER, symbol + '-' + time_str + ".json")
     with open(file_path, 'w') as file:
-        json.dump(list(trades), file)
+        json.dump(trades, file)
 
 
 if __name__ == '__main__':
