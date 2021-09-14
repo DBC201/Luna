@@ -10,7 +10,7 @@ from luna_modules.gate_io.GateApiWrapper import get_first_thousand_orders, get_a
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 
 load_dotenv(dotenv_path=os.path.join(ROOT, ".env.local"))
-DUMP_FOLDER = os.path.join(ROOT, "historical_trades", "gate_io")
+DUMP_FOLDER = os.path.join(ROOT, "gate_io_listings")
 
 
 def main():
