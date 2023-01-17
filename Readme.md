@@ -2,7 +2,7 @@
 Luna is a program consisting of different modules and scripts for binance using python-binance library. However
 the modules should work with the right input format which have been documented in their relative folder. 
 - [Github repo](https://github.com/DBC201/Luna)
-- [demo website](https://bogdanoff.pw)
+- [demo website](https://rocketdodgegame.com:41373)
 - ~~[Try out the discord bot](https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot)~~
   The binance api doesn't work in the US, and our servers are located in the US.
 
