@@ -29,7 +29,7 @@ class BinanceAnnouncementScrape:
         raw_json = re.findall(regex_str, decoded_page)[0][
                    len("<script id=\"__APP_DATA\" type=\"application/json\">"):len("</script>") * -1]
         j = json.loads(raw_json)
-        return j["routeProps"]['b723']["navDataResource"][0]['articles']
+        return j["routeProps"]['ce50']["catalogs"][0]['articles']
 
     def __get_symbols_date(self):
         """Get the sentence that has the trading pairs and the date

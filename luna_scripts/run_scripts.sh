@@ -5,17 +5,18 @@ if [ ! -d "$output_path" ]; then
 	mkdir "$output_path"
 fi
 
-cd "$current_path/listing_mail"
-nohup python3 auto_mail.py > "$output_path/mail_output.txt" &
-cd ..
+# cd "$current_path/listing_mail"
+# nohup python3 auto_mail.py > "$output_path/mail_output.txt" &
+# cd ..
 
 cd "$current_path/listing_log"
-nohup python3 auto_log.py > "$output_path/log_output.txt" &
+python download_gateio.py > ../../outputs/download_gateio.txt &
+# nohup python3 auto_log.py > "$output_path/log_output.txt" &
 cd ..
 
 cd "$current_path/meme"
 nohup python3 DiscordBot.py > "$output_path/meme_output.txt" &
 cd ..
 
-echo "Active python3 processes:"
-ps aux | grep python3
+# echo "Active python3 processes:"
+# ps aux | grep python3

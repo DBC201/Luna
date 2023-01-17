@@ -3,7 +3,8 @@ Luna is a program consisting of different modules and scripts for binance using 
 the modules should work with the right input format which have been documented in their relative folder. 
 - [Github repo](https://github.com/DBC201/Luna)
 - [demo website](https://bogdanoff.pw)
-- [Try out the discord bot](https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot)
+- ~~[Try out the discord bot](https://discord.com/api/oauth2/authorize?client_id=859857639255834644&permissions=52224&scope=bot)~~
+  The binance api doesn't work in the US, and our servers are located in the US.
 
 ## Discord Bot
 Currently, the bot sends messages about market change to the added channels. It will message in 10% price increase,
@@ -36,13 +37,14 @@ Currently, the bot sends messages about market change to the added channels. It 
 ## Scripts
 ### listing_buy
 This is a bot that listens for trades, and will automatically buy when it gets a trade. It will sell if certain conditions
-are met. (TODO)
+are met.
 ### listing_log
-TODO
+This used to scrape the binance website for listings and set an autologger to the listing date to log the first minute of trades. 
+It also allows for past minute trades to be downloaded via download_binance.py and download_gateio.py.
 ### listing_mail
-TODO
+This sends emails when there is going to be a new listing.
 ### meme
-TODO
+A discord bot that sends notification when there is a pump and dump for a given coin.
 
 ## Modules
 TODO
